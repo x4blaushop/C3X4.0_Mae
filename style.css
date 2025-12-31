@@ -1,75 +1,86 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: 'Courier New', monospace;
 }
 
 body {
-  background: black;
-  color: #62ff8a;
-  overflow-x: hidden;
+  margin: 0;
+  background: #000;
+  color: #00ff88;
 }
 
-canvas#matrix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-.topo {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.topo h1 {
-  font-size: 2.2rem;
-}
-
-.casa {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 40px;
-}
-
-.comodo {
-  border: 1px solid rgba(98,255,138,0.3);
-  padding: 20px;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-}
-
-.comodo h2 {
-  margin-bottom: 10px;
-}
-
-.pesquisa input {
-  width: 100%;
-  padding: 10px;
-  background: black;
-  border: 1px solid #62ff8a;
-  color: #62ff8a;
-  margin-bottom: 10px;
-}
-
-.pesquisa button {
-  width: 100%;
-  padding: 10px;
-  background: #62ff8a;
-  color: black;
-  border: none;
-  cursor: pointer;
-}
-
-.rodape {
-  text-align: center;
+header.entrada {
   padding: 30px;
+  text-align: center;
+  border-bottom: 1px solid #00ff88;
+}
+
+h1, h2 {
+  text-shadow: 0 0 8px #00ff88;
 }
 
 .portal {
-  color: #62ff8a;
+  display: inline-block;
+  margin-top: 15px;
+  color: #00ff88;
   text-decoration: none;
-  font-size: 1.1rem;
+  border: 1px solid #00ff88;
+  padding: 8px 16px;
+}
+
+.portal:hover {
+  background: #00ff88;
+  color: #000;
+}
+
+main {
+  padding: 20px;
+}
+
+.comodo {
+  border: 1px solid #00ff88;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0,255,136,0.3);
+}
+
+.oculto {
+  display: none;
+}
+
+.botoes button {
+  margin: 5px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  cursor: pointer;
+}
+
+.botoes button:hover {
+  background: #00ff88;
+  color: #000;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  background: #000;
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  padding: 10px;
+}
+
+input {
+  background: #000;
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  padding: 8px;
+  width: 70%;
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  border-top: 1px solid #00ff88;
 }
