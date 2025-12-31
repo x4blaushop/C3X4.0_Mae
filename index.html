@@ -1,48 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>C3X4.0 | Habitação Digital</title>
+  <meta charset="UTF-8">
+  <title>Casa Digital — Habitação Pessoal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+  <header class="entrada">
+    <h1>Casa Digital</h1>
+    <p>Uma habitação digital para organizar, viver e explorar.</p>
+    <a class="portal" href="https://x4blaushop.github.io/NIVEL-0/" target="_blank">
+      Portal — Nível 0
+    </a>
+  </header>
 
-<header class="topo">
-  <h1>Habitação Digital</h1>
-  <p>Infraestrutura viva • Visual Matrix</p>
-</header>
+  <main>
 
-<main class="casa">
+    <!-- MAPA DA CASA -->
+    <section class="comodo">
+      <h2>🗺️ Mapa da Casa</h2>
+      <div class="botoes">
+        <button onclick="mostrarComodo('sala')">Sala</button>
+        <button onclick="mostrarComodo('escritorio')">Escritório</button>
+        <button onclick="mostrarComodo('biblioteca')">Biblioteca</button>
+        <button onclick="mostrarComodo('pesquisa')">Pesquisa</button>
+        <button onclick="mostrarComodo('manual')">Manual</button>
+      </div>
+    </section>
 
-  <section class="comodo sala">
-    <h2>Sala de Estar</h2>
-    <p>Apresentação, convivência, identidade pública.</p>
-  </section>
+    <!-- SALA -->
+    <section id="sala" class="comodo oculto">
+      <h2>🛋️ Sala de Estar</h2>
+      <p>Um espaço para observar, pensar e descansar.</p>
+    </section>
 
-  <section class="comodo quarto">
-    <h2>Quarto</h2>
-    <p>Essência, história, pensamentos.</p>
-  </section>
+    <!-- ESCRITÓRIO -->
+    <section id="escritorio" class="comodo oculto">
+      <h2>📝 Escritório</h2>
+      <textarea id="notas" placeholder="Escreva aqui suas anotações..."></textarea>
+      <button onclick="salvarNotas()">Salvar</button>
+    </section>
 
-  <section class="comodo cozinha">
-    <h2>Cozinha</h2>
-    <p>Produção, trabalho, projetos em andamento.</p>
-  </section>
+    <!-- BIBLIOTECA -->
+    <section id="biblioteca" class="comodo oculto">
+      <h2>📚 Biblioteca</h2>
+      <p>Conhecimento é público. Use a pesquisa para explorar.</p>
+    </section>
 
-  <section class="comodo pesquisa">
-    <h2>Pesquisa</h2>
-    <input type="text" id="busca" placeholder="Pesquisar na rede..." />
-    <button onclick="pesquisar()">Ir</button>
-  </section>
+    <!-- PESQUISA -->
+    <section id="pesquisa" class="comodo oculto">
+      <h2>🔎 Pesquisa Externa</h2>
+      <input id="campoPesquisa" type="text" placeholder="Pesquisar na rede...">
+      <button onclick="pesquisar()">Pesquisar</button>
+    </section>
 
-</main>
+    <!-- MANUAL -->
+    <section id="manual" class="comodo oculto">
+      <h2>📖 Manual da Casa Digital</h2>
+      <p>
+        Esta é sua casa digital.<br><br>
+        Você pode:
+        <ul>
+          <li>Organizar ideias</li>
+          <li>Pesquisar informações</li>
+          <li>Personalizar o espaço</li>
+        </ul>
+        Nada aqui coleta dados sensíveis.<br>
+        A casa é apenas uma infraestrutura digital pessoal.
+      </p>
+    </section>
 
-<footer class="rodape">
-  <a class="portal" href="https://x4blaushop.github.io/NIVEL-0/">⭢ Portal Nível 0</a>
-</footer>
+  </main>
 
-<script src="script.js"></script>
+  <footer>
+    <p>Habitação Digital • Visual Matrix • Uso pessoal</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
