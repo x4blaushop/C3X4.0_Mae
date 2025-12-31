@@ -19,7 +19,8 @@
     <nav id="painel-comando">
         <button onclick="navegar('acervo')">ACERVO</button>
         <button onclick="navegar('logs')">CADERNO</button>
-        <button onclick="navegar('escritorio')">ESCRITÓRIO</button> <button onclick="navegar('midia')">MÍDIA</button>
+        <button onclick="navegar('escritorio')">ESCRITÓRIO</button>
+        <button onclick="navegar('midia')">MÍDIA</button>
         <button onclick="navegar('saude')">SAÚDE</button>
         <button onclick="navegar('oficina')">OFICINA</button>
         <button onclick="navegar('atmosfera')">ATMOSFERA</button>
@@ -56,9 +57,9 @@
         <h2>🏢 COMANDO HOME OFFICE</h2>
         <div class="grade-medidores">
             <div class="medidor-card">
-                <small>PROTEÇÃO DE RUÍDO</small>
+                <small>ISOLAMENTO DE RUÍDO</small>
                 <div class="barra-progresso"><div id="barra-ruido" style="width: 95%;"></div></div>
-                <b>95% ISOLADO</b>
+                <b>95% SOBERANO</b>
             </div>
             <div class="medidor-card">
                 <small>FOCO ATIVO</small>
@@ -67,7 +68,7 @@
             </div>
         </div>
         <div class="grafico-container">
-            <h3>📊 RENDIMENTO (DNA)</h3>
+            <h3>📊 RENDIMENTO (ULTIMAS SESSÕES)</h3>
             <div class="grafico-barras" id="grafico-trabalho"></div>
         </div>
         <button class="btn-acao" onclick="iniciarCicloFoco()">INICIAR SESSÃO</button>
@@ -76,7 +77,7 @@
 
     <section id="midia" class="setor" style="display:none;">
         <h2>📻 MÍDIA SOBERANA</h2>
-        <p>Habite a casa com som sem depender da internet externa.</p>
+        <p>Som sem depender da internet externa.</p>
         <input type="file" id="input-audio" accept="audio/*" hidden onchange="carregarAudio(this)">
         <button class="btn-acao" onclick="document.getElementById('input-audio').click()">INJETAR MÚSICA</button>
         <audio id="player-audio" controls style="width:100%; margin-top:20px;"></audio>
@@ -86,7 +87,7 @@
         <h2>🧬 PROTOCOLO BIOLÓGICO</h2>
         <div class="box-util">
             <input type="number" id="peso-input" placeholder="Seu peso atual (kg)">
-            <button class="btn-acao" onclick="gerarProtocoloSaude()">GERAR DIRETRIZES DE OSMOSE</button>
+            <button class="btn-acao" onclick="gerarProtocoloSaude()">GERAR DIRETRIZES</button>
         </div>
         <div id="resultado-saude" class="box-aviso"></div>
     </section>
@@ -95,7 +96,7 @@
         <h2>🛠 OFICINA DE PRIVACIDADE</h2>
         <div class="box-util">
             <h3>🛡 LIMPADOR DE METADADOS</h3>
-            <p>Remova rastros de localização de suas fotos.</p>
+            <p>Remova rastros das fotos antes do backup.</p>
             <input type="file" id="limpador-input" onchange="limparDadosFoto(this)" hidden>
             <button class="btn-acao" onclick="document.getElementById('limpador-input').click()">LIMPAR FOTO</button>
         </div>
@@ -120,10 +121,10 @@
 
     <section id="backup" class="setor" style="display:none;">
         <h2>💾 MATERIALIZAR DNA</h2>
-        <p>Gere um backup total que contém cada foto, nota e cor da sua habitação.</p>
-        <button class="btn-acao" onclick="gerarBackupTotal()">MATERIALIZAR BACKUP (.JSON)</button>
+        <p>Gere um backup total (.JSON) para garantir que nada se perca.</p>
+        <button class="btn-acao" onclick="gerarBackupTotal()">MATERIALIZAR BACKUP</button>
         <div class="box-aviso" style="margin-top:20px;">
-            <small>RESTAURAR HABITAÇÃO:</small>
+            <small>RESTAURAR:</small>
             <input type="file" id="restaurar-input" onchange="restaurarDNA(this)">
         </div>
     </section>
