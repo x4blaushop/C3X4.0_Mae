@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Habitação Digital</title>
+<title>Habitação Digital - C3X4.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -20,52 +20,63 @@
 </header>
 
 <main>
+    <section class="room" id="medidores">
+        <h2>📊 Pulso do Sistema</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="label">Status</span>
+                <span class="value" id="sys-status">Estável</span>
+                <div class="pulse"></div>
+            </div>
+            <div class="stat-card">
+                <span class="label">Interações</span>
+                <span class="value" id="interaction-count">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Saúde DNA</span>
+                <span class="value">100%</span>
+            </div>
+        </div>
+    </section>
 
-<section class="room" id="sala">
-<h2>🛋 Sala</h2>
-<p id="status"></p>
-</section>
+    <section class="room" id="sala">
+        <h2>🛋 Sala</h2>
+        <p id="status"></p>
+        <small id="session-timer">Sessão: 0s</small>
+    </section>
 
-<section class="room" id="galeria">
-<h2>🖼 Galeria</h2>
-<input type="file" id="photoInput" multiple>
-<div id="gallery"></div>
-</section>
+    <section class="room" id="galeria">
+        <h2>🖼 Galeria</h2>
+        <input type="file" id="photoInput" multiple>
+        <div id="gallery"></div>
+    </section>
 
-<section class="room" id="notas">
-<h2>📒 Notas</h2>
-<textarea id="notes"></textarea>
-</section>
+    <section class="room" id="notas">
+        <h2>📒 Notas</h2>
+        <textarea id="notes"></textarea>
+    </section>
 
-<section class="room" id="graficos">
-<h2>📊 Uso da Casa</h2>
-<canvas id="chart" width="300" height="150"></canvas>
-</section>
+    <section class="room" id="links">
+        <h2>🔗 Conexões</h2>
+        <button onclick="openWhats()">WhatsApp</button>
+        <button onclick="openLink()">Link Pessoal</button>
+        <button onclick="openNivel()">Portal Nível 0</button>
+    </section>
 
-<section class="room" id="links">
-<h2>🔗 Conexões</h2>
-<button onclick="openWhats()">WhatsApp</button>
-<button onclick="openLink()">Link Pessoal</button>
-<button onclick="openNivel()">Portal Nível 0</button>
-</section>
-
-<section class="room">
-<h2>📘 Manual</h2>
-<details>
-<summary>Como usar esta casa</summary>
-<p>
-Esta é sua habitação digital.<br>
-Nada é enviado para fora.<br>
-Você pode mudar, ligar ou desligar cômodos.<br>
-Tudo é simples, local e seu.
-</p>
-</details>
-</section>
-
+    <section class="room">
+        <h2>📘 Manual</h2>
+        <details>
+            <summary>Como usar esta casa</summary>
+            <p>
+                Esta é sua habitação digital independente.<br>
+                A identidade é sua; a estrutura é soberana.
+            </p>
+        </details>
+    </section>
 </main>
 
 <footer>
-Habitação Digital • Dados locais • Controle total
+    José Patrick Soares • Arquiteto de Sistemas • PITSYSTEM Protegido
 </footer>
 
 <script src="script.js"></script>
