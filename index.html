@@ -16,10 +16,10 @@
   </div>
   
   <div class="custom-panel">
-    <input type="color" id="colorPicker" onchange="alterarAtmosfera(this.value)" title="Personalizar DNA">
-    <button onclick="toggleSetor('galeria')">ACERVO</button>
+    <button onclick="toggleSetor('atmosfera')">ATMOSFERA</button> <button onclick="toggleSetor('galeria')">ACERVO</button>
     <button onclick="toggleSetor('notas')">LOGS</button>
-    <button onclick="toggleSetor('diagnostico')">SAÚDE</button> <button onclick="sincronizarDNA()">BACKUP</button>
+    <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
+    <button onclick="sincronizarDNA()">BACKUP</button>
   </div>
 </header>
 
@@ -30,6 +30,24 @@
             <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
             <div class="stat-card"><small>ESTADO SISTEMA</small><b id="sys-state">ESTÁVEL</b></div>
             <div class="stat-card"><small>DNA_SAÚDE</small><b id="bio-status">100%</b></div>
+        </div>
+    </section>
+
+    <section class="room" id="atmosfera" style="display:none;">
+        <h2>🎨 COMANDO DE ATMOSFERA (255 CORES)</h2>
+        <div class="control-grid">
+            <div class="control-item">
+                <small>DNA HUE (0-255)</small>
+                <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)">
+            </div>
+            <div class="control-item">
+                <small>FILTRO DE RUÍDO EXTERNO</small>
+                <button id="noise-filter" onclick="toggleRuido()">MURALHA: ATIVA</button>
+            </div>
+        </div>
+        <div class="grid-buttons">
+            <button onclick="aplicarEfeito('glitch')">EFEITO GLITCH</button>
+            <button onclick="aplicarEfeito('pulse')">EFEITO PULSAR</button>
         </div>
     </section>
 
