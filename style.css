@@ -1,84 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Habitação Digital - C3X4.0</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="matrix">
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    text-align: center;
+}
 
-<canvas id="matrix"></canvas>
+.stat-card {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
 
-<header>
-  <h1>🏠 Casa Digital</h1>
-  <div class="top-controls">
-    <button onclick="toggleSimple()">Modo Simples</button>
-    <button onclick="toggleTheme()">Tema</button>
-    <button onclick="exportData()">Backup</button>
-  </div>
-</header>
+.stat-card .label { font-size: 0.65rem; color: #888; display: block; }
+.stat-card .value { font-size: 1.1rem; color: #00ff41; font-weight: bold; }
 
-<main>
-    <section class="room" id="medidores">
-        <h2>📊 Pulso do Sistema</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="label">Status</span>
-                <span class="value" id="sys-status">Estável</span>
-                <div class="pulse"></div>
-            </div>
-            <div class="stat-card">
-                <span class="label">Interações</span>
-                <span class="value" id="interaction-count">0</span>
-            </div>
-            <div class="stat-card">
-                <span class="label">Saúde DNA</span>
-                <span class="value">100%</span>
-            </div>
-        </div>
-    </section>
+.pulse {
+    width: 6px; height: 6px;
+    background: #00ff41;
+    border-radius: 50%;
+    margin: 5px auto;
+    box-shadow: 0 0 8px #00ff41;
+    animation: pulse-animation 2s infinite;
+}
 
-    <section class="room" id="sala">
-        <h2>🛋 Sala</h2>
-        <p id="status"></p>
-        <small id="session-timer">Sessão: 0s</small>
-    </section>
+@keyframes pulse-animation {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
 
-    <section class="room" id="galeria">
-        <h2>🖼 Galeria</h2>
-        <input type="file" id="photoInput" multiple>
-        <div id="gallery"></div>
-    </section>
-
-    <section class="room" id="notas">
-        <h2>📒 Notas</h2>
-        <textarea id="notes"></textarea>
-    </section>
-
-    <section class="room" id="links">
-        <h2>🔗 Conexões</h2>
-        <button onclick="openWhats()">WhatsApp</button>
-        <button onclick="openLink()">Link Pessoal</button>
-        <button onclick="openNivel()">Portal Nível 0</button>
-    </section>
-
-    <section class="room">
-        <h2>📘 Manual</h2>
-        <details>
-            <summary>Como usar esta casa</summary>
-            <p>
-                Esta é sua habitação digital independente.<br>
-                A identidade é sua; a estrutura é soberana.
-            </p>
-        </details>
-    </section>
-</main>
-
-<footer>
-    José Patrick Soares • Arquiteto de Sistemas • PITSYSTEM Protegido
-</footer>
-
-<script src="script.js"></script>
-</body>
-</html>
+#session-timer { color: #888; display: block; margin-top: 10px; }
