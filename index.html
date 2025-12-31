@@ -2,107 +2,97 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>C3X4.0_MAE | HABITAÇÃO SOBERANA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C3X4.0_MAE | HABITAÇÃO SOBERANA</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="matrix">
 
-<div id="portal-container"><canvas id="canvas-portal"></canvas></div>
+<canvas id="portal-canvas"></canvas>
 
 <header>
-  <div class="brand">
-    <h1>C3X4.0_MAE</h1>
-    <div id="dna-pulse" onclick="verificarAcessoSoberano()" title="Identificação Arquiteto José Patrick"></div>
-  </div>
-  
-  <nav class="custom-panel">
-    <button onclick="toggleSetor('galeria')">ACERVO</button>
-    <button onclick="toggleSetor('notas')">CADERNO</button>
-    <button onclick="toggleSetor('pintura')">MURAL</button>
-    <button onclick="toggleSetor('multimidia')">LAZER</button>
-    <button onclick="toggleSetor('ferramentas')">OFICINA</button> 
-    <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
-  </nav>
+    <div class="brand">
+        <h1 id="titulo-habitacao">C3X4.0_MAE</h1>
+        <div id="dna-pulse" onclick="identificarDono()"></div>
+    </div>
+    
+    <nav id="nav-global">
+        <button onclick="navegar('acervo')">ACERVO</button>
+        <button onclick="navegar('caderno')">CADERNO</button>
+        <button onclick="navegar('midia')">MÍDIA</button>
+        <button onclick="navegar('saude')">SAÚDE</button>
+        <button onclick="navegar('oficina')">OFICINA</button>
+        <button onclick="navegar('reforma')">REFORMA</button>
+        <button onclick="navegar('backup')">BACKUP</button>
+    </nav>
 </header>
 
 <main>
-    <section class="room" id="telemetria">
-        <div class="stats-grid">
-            <div class="stat-card"><small>SISTEMA</small><b id="timer">00:00</b></div>
-            <div class="stat-card"><small>MEMÓRIA</small><b id="ram-usage">-- MB</b></div>
-            <div class="stat-card"><small>PORTÃO</small><b id="status-rede">PRIVADO</b></div>
-            <div class="stat-card"><small>INTEGRIDADE</small><b>100%</b></div>
-        </div>
-        <div class="grid-buttons" style="margin-top:10px;">
-            <button id="btnRede" class="btn-full" onclick="toggleRede()">MODO ONLINE (AVISO: ABRE O PORTÃO)</button>
-        </div>
+    <section class="telemetria-dashboard">
+        <div class="stat-card"><small>UPTIME</small><b id="uptime">00:00</b></div>
+        <div class="stat-card"><small>ELEMENTS</small><b id="st-elements">LIMPO</b></div>
+        <div class="stat-card"><small>NETWORK</small><b id="st-network">OFFLINE</b></div>
+        <div class="stat-card"><small>CONSOLE</small><b id="st-console">SILÊNCIO</b></div>
     </section>
 
-    <section class="room" id="pintura" style="display:none;">
-        <h2>🎨 MURAL DE CRIAÇÃO</h2>
-        <div class="control-grid">
-            <input type="color" id="corPincel" value="#00ff41">
-            <select id="tamanhoPincel"><option value="2">Fino</option><option value="5" selected>Médio</option><option value="15">Grosso</option></select>
-            <button onclick="limparMural()">LIMPAR MURAL</button>
-        </div>
-        <canvas id="muralCriativo" style="border:1px solid var(--green); background:#000; width:100%; height:300px; touch-action:none;"></canvas>
-    </section>
-
-    <section class="room" id="multimidia" style="display:none;">
-        <h2>📺 LAZER E RÁDIO SOBERANA</h2>
-        <div class="tool-card">
-            <p>Injete músicas (MP3) para ouvir sem depender de streaming ou anúncios.</p>
-            <input type="file" id="inputAudio" accept="audio/*" hidden onchange="carregarMusica(this)">
-            <button class="btn-full" onclick="document.getElementById('inputAudio').click()">INJETAR MÚSICA NO DNA</button>
-            <audio id="playerAudio" controls style="width:100%; margin-top:10px;"></audio>
-        </div>
-    </section>
-
-    <section class="room" id="galeria" style="display:none;">
+    <section id="acervo" class="room">
         <h2>🖼 ACERVO DE MEMÓRIAS</h2>
-        <div class="upload-area">
-            <input type="file" id="inputFoto" multiple hidden onchange="injetarMemoriaMassa(this)">
-            <button class="btn-full" onclick="document.getElementById('inputFoto').click()">ADICIONAR FOTOS À CASA</button>
+        <div class="upload-zone">
+            <input type="file" id="inp-foto" multiple hidden onchange="injetarFotos(this)">
+            <button class="btn-exp" onclick="document.getElementById('inp-foto').click()">INJETAR FOTOS NO DNA</button>
         </div>
-        <div id="grid-galeria" class="gallery-grid"></div>
+        <div id="grid-fotos" class="gallery-grid"></div>
     </section>
 
-    <section class="room" id="notas" style="display:none;">
+    <section id="caderno" class="room" style="display:none;">
         <h2>📒 CADERNO DE REGISTROS</h2>
-        <textarea id="txtNotas" placeholder="O que você escrever aqui, ninguém na internet pode ler..."></textarea>
-        <div class="grid-buttons">
-            <button onclick="salvarNotaLocal()">GRAVAR NO DNA</button>
-            <button onclick="baixarNotasComoTXT()">BAIXAR PARA O DISPOSITIVO (.TXT)</button>
+        <textarea id="txt-logs" placeholder="Memórias, receitas e registros soberanos..."></textarea>
+        <div class="grid-2">
+            <button class="btn-exp" onclick="salvarLogs()">GRAVAR NO DNA</button>
+            <button class="btn-exp" onclick="exportarTXT()">EXPORTAR .TXT</button>
         </div>
     </section>
 
-    <section class="room" id="ferramentas" style="display:none;">
-        <h2>🛠 OFICINA DE FERRAMENTAS</h2>
-        <div class="tool-grid">
-            <div class="tool-card">
-                <h3>🛡 ESCUDO DE PRIVACIDADE</h3>
-                <small>Limpa rastros digitais das suas fotos.</small>
-                <input type="file" id="fileStripper" onchange="limparFoto(this)" hidden>
-                <button class="btn-full" onclick="document.getElementById('fileStripper').click()">LIMPAR DADOS DE FOTO</button>
-                <div id="downloadArea"></div>
+    <section id="midia" class="room" style="display:none;">
+        <h2>📻 MÍDIA SOBERANA (OFFLINE)</h2>
+        <input type="file" id="inp-audio" accept="audio/*" hidden onchange="carregarAudio(this)">
+        <button class="btn-exp" onclick="document.getElementById('inp-audio').click()">INJETAR MÚSICA</button>
+        <div id="player-container" class="res-box">
+            <audio id="audio-player" controls style="width:100%"></audio>
+        </div>
+    </section>
+
+    <section id="saude" class="room" style="display:none;">
+        <h2>💧 PROTOCOLO DE OSMOSE</h2>
+        <div class="input-group">
+            <input type="number" id="peso-mae" placeholder="Seu peso (kg)">
+            <button class="btn-exp" onclick="calcularSaude()">GERAR DIRETRIZES</button>
+        </div>
+        <div id="res-saude" class="res-box"></div>
+    </section>
+
+    <section id="reforma" class="room" style="display:none;">
+        <h2>🎨 REFORMA DA ATMOSFERA</h2>
+        <div class="config-grid">
+            <div class="config-card">
+                <label>Energia:</label><input type="color" id="cfg-accent" onchange="mutarDNA()">
+                <label>Paredes:</label><input type="color" id="cfg-bg" onchange="mutarDNA()">
+                <label>Móveis:</label><input type="color" id="cfg-btn" onchange="mutarDNA()">
             </div>
-            <div class="tool-card">
-                <h3>⚖️ ANALISADOR DE RISCO</h3>
-                <textarea id="txtContrato" placeholder="Cole textos suspeitos aqui..." style="height:50px;"></textarea>
-                <button class="btn-full" onclick="analisarContrato()">SIFONAR RISCOS</button>
-                <div id="resContrato" class="res-box"></div>
+            <div class="config-card">
+                <h3>Renomear Cômodos</h3>
+                <div id="editor-nomes"></div>
+                <button class="btn-exp" onclick="consolidarReforma()">SALVAR REFORMA</button>
             </div>
         </div>
     </section>
 
-    <section class="room" id="diagnostico" style="display:none;">
-        <h2>💧 PROTOCOLO DE SAÚDE (OSMOSE)</h2>
-        <div class="tool-card">
-            <p>Cálculo biológico para hidratação e recuperação física.</p>
-            <input type="number" id="pesoCorpo" placeholder="Seu peso atual (kg)">
-            <button class="btn-full" onclick="calcularSoro()">GERAR PROTOCOLO</button>
-            <div id="resSoro" class="res-box"></div>
+    <section id="backup" class="room" style="display:none;">
+        <h2>💾 COFRE DE BACKUP</h2>
+        <button class="btn-exp" onclick="executarBackup()">MATERIALIZAR BACKUP TOTAL</button>
+        <div class="res-box">
+            <small>RESTAURAR HABITAÇÃO:</small>
+            <input type="file" onchange="restaurarBackup(this)">
         </div>
     </section>
 </main>
