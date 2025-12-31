@@ -1,23 +1,36 @@
-/* Estética de Comando Soberano */
-.room {
-    background: #000;
-    border-left: 3px solid var(--accent); /* Uma linha de pulso lateral */
-    border-radius: 0; /* Casas modernas são angulares, não redondas */
-    box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.05);
+:root { --green: #00ff41; --bg: #000; }
+body { margin: 0; background: var(--bg); color: #fff; font-family: monospace; overflow-x: hidden; }
+
+header { 
+    display: flex; justify-content: space-between; padding: 20px;
+    border-bottom: 2px solid #222; background: #000; position: relative; z-index: 10;
 }
 
-/* Botões que parecem interruptores de sistema */
-button {
-    background: transparent;
-    border: 1px solid #333;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 900;
-    transition: 0.2s;
+#status-light { width: 10px; height: 10px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); }
+
+.dashboard { 
+    display: flex; justify-content: space-around; background: #111; 
+    padding: 15px; border: 1px solid #333; margin: 20px 0;
+}
+.stat { display: flex; flex-direction: column; align-items: center; }
+.stat label { font-size: 10px; color: #666; }
+.stat span { font-size: 20px; color: var(--green); font-weight: bold; }
+
+.room { 
+    background: rgba(0,0,0,0.85); border: 1px solid #222; 
+    margin: 20px auto; padding: 20px; max-width: 800px;
 }
 
-button:active {
-    background: var(--accent);
-    color: #000;
-    box-shadow: 0 0 30px var(--accent);
+button { 
+    background: #000; color: var(--green); border: 1px solid var(--green); 
+    padding: 10px; cursor: pointer; font-family: monospace; transition: 0.1s;
 }
+button:hover { background: var(--green); color: #000; }
+
+textarea { width: 100%; background: #050505; color: #0f0; border: 1px solid #222; height: 100px; }
+
+/* MODO FOCO: O SISTEMA SE CURVA AO USUÁRIO */
+.simple-mode .dashboard, .simple-mode #matrix { display: none; }
+.simple-mode .room { border: 1px solid #111; }
+
+canvas#matrix { position: fixed; top: 0; left: 0; z-index: -1; }
