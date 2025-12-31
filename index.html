@@ -16,7 +16,8 @@
   </div>
   
   <div class="custom-panel">
-    <button onclick="toggleSetor('atmosfera')">ATMOSFERA</button> <button onclick="toggleSetor('galeria')">ACERVO</button>
+    <button onclick="toggleSetor('atmosfera')">ATMOSFERA</button> 
+    <button onclick="toggleSetor('galeria')">ACERVO</button>
     <button onclick="toggleSetor('notas')">LOGS</button>
     <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
     <button onclick="sincronizarDNA()">BACKUP</button>
@@ -49,6 +50,10 @@
             <button onclick="aplicarEfeito('glitch')">EFEITO GLITCH</button>
             <button onclick="aplicarEfeito('pulse')">EFEITO PULSAR</button>
         </div>
+        <div id="scanner-container" style="margin-top:20px; display:none;">
+            <video id="webcam" autoplay playsinline style="width:100%; border:2px solid var(--green); border-radius:8px;"></video>
+            <p id="scanner-msg">AGUARDANDO RECONHECIMENTO FACIAL...</p>
+        </div>
     </section>
 
     <section class="room" id="diagnostico" style="display:none;">
@@ -66,11 +71,17 @@
 
     <section class="room" id="galeria" style="display:none;">
         <h2>🖼 ACERVO DIGITAL (Soberania Local)</h2>
-        <div class="upload-area">
-            <input type="file" id="inputFoto" multiple hidden onchange="processarImagens(this)">
-            <button onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIA</button>
+        <div id="galeria-travada">
+            <p>⚠️ ACESSO RESTRITO. VALIDE SEU DNA NO SETOR ATMOSFERA OU NO PULSE.</p>
+            <button onclick="ativarScannerVisual()">ATIVAR SCANNER VISUAL</button>
         </div>
-        <div id="grid-galeria"></div>
+        <div id="galeria-conteudo" style="display:none;">
+            <div class="upload-area">
+                <input type="file" id="inputFoto" multiple hidden onchange="processarImagens(this)">
+                <button onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIA</button>
+            </div>
+            <div id="grid-galeria"></div>
+        </div>
     </section>
 
     <section class="room" id="notas" style="display:none;">
