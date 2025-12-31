@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Casa Digital</title>
+  <meta charset="UTF-8" />
+  <title>Habitação Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <h1>🏠 Minha Casa Digital</h1>
-  <nav>
-    <a href="#pesquisa">Pesquisar</a>
-    <a href="#notas">Anotações</a>
-    <a href="#links">Meus Links</a>
-    <a href="#galeria">Fotos</a>
-    <a href="#manual">Manual</a>
-    <a href="https://x4blaushop.github.io/NIVEL-0/" target="_blank">Portal</a>
-  </nav>
+  <p id="status"></p>
 </header>
 
-<section id="pesquisa" class="bloco">
-  <h2>🔎 Pesquisar na internet</h2>
-  <input type="text" id="busca" placeholder="Pesquisar fora da casa...">
-  <button onclick="pesquisar()">Pesquisar</button>
-</section>
+<main>
 
-<section id="notas" class="bloco">
-  <h2>📝 Bloco de Anotações</h2>
-  <textarea id="notasTexto" placeholder="Escreva aqui..."></textarea>
-  <div class="botoes">
-    <button onclick="limparNotas()">Limpar</button>
-    <button onclick="exportarNotas()">Exportar</button>
-  </div>
-</section>
+  <!-- SALA -->
+  <section class="room">
+    <h2>🛋 Sala</h2>
+    <p>Bem-vindo. Este espaço muda conforme você usa.</p>
+  </section>
 
-<section id="links" class="bloco">
-  <h2>🔗 Meus Links</h2>
-  <input type="text" id="linkNome" placeholder="Nome">
-  <input type="url" id="linkURL" placeholder="https://">
-  <button onclick="adicionarLink()">Adicionar</button>
-  <ul id="listaLinks"></ul>
-</section>
+  <!-- GALERIA -->
+  <section class="room">
+    <h2>🖼 Galeria</h2>
+    <input type="file" id="photoInput" multiple accept="image/*">
+    <div id="gallery"></div>
+  </section>
 
-<section id="galeria" class="bloco">
-  <h2>🖼️ Galeria de Fotos</h2>
-  <input type="file" id="fotoInput" accept="image/*">
-  <div id="galeriaFotos"></div>
-</section>
+  <!-- NOTAS -->
+  <section class="room">
+    <h2>📒 Bloco de Notas</h2>
+    <textarea id="notes" placeholder="Escreva aqui..."></textarea>
+  </section>
 
-<section id="manual" class="bloco">
-  <h2>📘 Manual da Habitação Digital</h2>
-  <p>Esta é a sua casa digital.</p>
-  <p>Aqui você pode anotar, guardar links, fotos, pesquisar e organizar sua vida.</p>
-  <p>Tudo é seu. Você pode mudar, apagar ou adaptar quando quiser.</p>
-  <p>Esta casa não substitui serviços externos. Ela organiza sua rotina.</p>
-</section>
+  <!-- MANUAL -->
+  <section class="room">
+    <h2>📘 Manual da Habitação</h2>
+    <details>
+      <summary>Como usar esta casa</summary>
+      <p>
+        Esta é sua habitação digital pessoal.<br><br>
+        • Nada sai daqui<br>
+        • Tudo é seu<br>
+        • Você pode mudar quando quiser<br>
+        • Não é rede social<br>
+        • Não é banco<br>
+        • É um espaço de organização e vida
+      </p>
+    </details>
+  </section>
+
+</main>
+
+<footer>
+  <small>Habitação Digital • Dados locais • Sem servidores</small>
+</footer>
 
 <script src="script.js"></script>
 </body>
