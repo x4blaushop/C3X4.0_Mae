@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>C3X4.0 | HABITAÇÃO SOBERANA</title>
+    <title>C3X4.0_MAE | HABITAÇÃO SOBERANA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,10 +17,9 @@
   </div>
   
   <div class="custom-panel">
-    <button onclick="toggleSetor('ferramentas')">FERRAMENTAS</button> 
-    <button onclick="toggleSetor('atmosfera')">ATMOSFERA</button> 
     <button onclick="toggleSetor('galeria')">ACERVO</button>
-    <button onclick="toggleSetor('notas')">LOGS</button>
+    <button onclick="toggleSetor('notas')">CADERNO</button>
+    <button onclick="toggleSetor('ferramentas')">FERRAMENTAS</button> 
     <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
     <button onclick="gerarBackupTotal()">BACKUP TOTAL</button>
   </div>
@@ -30,90 +29,74 @@
     <section class="room" id="telemetria">
         <div class="stats-grid">
             <div class="stat-card"><small>UPTIME</small><b id="timer">00:00</b></div>
-            <div class="stat-card"><small>RAM_SISTEMA</small><b id="ram-usage">0.00 MB</b></div>
+            <div class="stat-card"><small>RAM_MAE</small><b id="ram-usage">0.00 MB</b></div>
+            <div class="stat-card"><small>PROTEÇÃO</small><b id="sys-state">Soberana</b></div>
             <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
-            <div class="stat-card"><small>FPS</small><b id="fps-monitor">60</b></div>
+        </div>
+    </section>
+
+    <section class="room" id="galeria">
+        <h2>🖼 ACERVO DE MEMÓRIAS</h2>
+        <div class="upload-area">
+            <input type="file" id="inputFoto" multiple hidden onchange="injetarMemoriaMassa(this)">
+            <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR FOTOS NO DNA</button>
+        </div>
+        <div id="grid-galeria" class="gallery-grid"></div>
+        <button class="btn-clear" onclick="limparAcervo()" style="margin-top:10px;">LIMPAR ACERVO</button>
+    </section>
+
+    <section class="room" id="notas" style="display:none;">
+        <h2>📒 CADERNO DE NOTAS</h2>
+        <textarea id="txtNotas" placeholder="Escreva receitas, lembretes ou pensamentos importantes..."></textarea>
+        <div class="grid-buttons">
+            <button onclick="salvarNotaLocal()">GRAVAR NA MEMÓRIA</button>
+            <button onclick="baixarNotasComoTXT()">BAIXAR ARQUIVO .TXT</button>
         </div>
     </section>
 
     <section class="room" id="ferramentas" style="display:none;">
-        <h2>🛠 UTILITÁRIOS DE SOBERANIA</h2>
-        
+        <h2>🛠 FERRAMENTAS DA HABITAÇÃO</h2>
         <div class="tool-grid">
             <div class="tool-card">
-                <h3>🛡 PRIVACIDADE: EXIF STRIPPER</h3>
-                <p>Remova rastros de GPS e ID de hardware das fotos antes de enviar.</p>
+                <h3>🛡 LIMPADOR DE FOTOS</h3>
+                <small>Remove rastros de GPS e Celular antes de enviar a foto para alguém.</small>
                 <input type="file" id="fileStripper" onchange="limparFoto(this)" hidden>
-                <button class="btn-full" onclick="document.getElementById('fileStripper').click()">LIMPAR METADADOS DE FOTO</button>
+                <button class="btn-full" onclick="document.getElementById('fileStripper').click()">LIMPAR FOTO</button>
                 <canvas id="canvasStripper" style="display:none;"></canvas>
-                <div id="downloadArea" style="margin-top:10px;"></div>
+                <div id="downloadArea"></div>
             </div>
-
             <div class="tool-card">
-                <h3>💧 PROTOCOLO DE OSMOSE (SORO)</h3>
-                <p>Cálculo biológico para recuperação de tecidos e hidratação real.</p>
-                <input type="number" id="pesoCorpo" placeholder="Seu peso atual (kg)">
-                <button class="btn-full" onclick="calcularSoro()">GERAR PROTOCOLO</button>
-                <div id="resSoro" class="res-box"></div>
-            </div>
-
-            <div class="tool-card">
-                <h3>⚖️ SIFONADOR DE CONTRATOS</h3>
-                <p>Cole Termos de Uso aqui para detectar cláusulas de perda de soberania.</p>
-                <textarea id="txtContrato" placeholder="Cole o texto do contrato aqui..." style="height:80px;"></textarea>
-                <button class="btn-full" onclick="analisarContrato()">SIFONAR RISCOS</button>
+                <h3>⚖️ ANALISADOR DE CONTRATOS</h3>
+                <small>Cole textos de apps para ver se eles roubam seus dados.</small>
+                <textarea id="txtContrato" placeholder="Cole o texto aqui..." style="height:60px;"></textarea>
+                <button class="btn-full" onclick="analisarContrato()">ANALISAR RISCO</button>
                 <div id="resContrato" class="res-box"></div>
             </div>
         </div>
     </section>
 
-    <section class="room" id="atmosfera" style="display:none;">
-        <h2>🎨 COMANDO DE ATMOSFERA (255 CORES)</h2>
-        <div class="control-grid">
-            <div class="control-item">
-                <small>DNA HUE (0-255)</small>
-                <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)">
-            </div>
-            <div class="control-item">
-                <small>MURALHA DE RUÍDO</small>
-                <button id="noise-filter" onclick="toggleMuralha()">MURALHA: ATIVA</button>
-            </div>
-        </div>
-        <div class="grid-buttons">
-            <button onclick="aplicarEfeito('glitch')">GLITCH</button>
-            <button onclick="aplicarEfeito('pulse')">PULSAR</button>
-        </div>
-    </section>
-
-    <section class="room" id="galeria" style="display:none;">
-        <h2>🖼 ACERVO SOBERANO (Injeção em Massa)</h2>
-        <div class="upload-area">
-            <input type="file" id="inputFoto" multiple hidden onchange="processarImagensMassa(this)">
-            <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR EM MASSA NO DNA</button>
-        </div>
-        <div id="grid-galeria" class="gallery-grid"></div>
-    </section>
-
-    <section class="room" id="notas" style="display:none;">
-        <h2>📒 REGISTROS DE DNA (LOGS)</h2>
-        <textarea id="txtNotas" placeholder="O que é escrito aqui permanece na habitação..."></textarea>
-        <div class="grid-buttons">
-            <button onclick="baixarNotasComoTXT()">EXPORTAR TXT REAL</button>
-            <button onclick="salvarNotaLocal()">GRAVAR NO DNA</button>
-        </div>
-    </section>
-
     <section class="room" id="diagnostico" style="display:none;">
-        <h2>🛠 TELEMETRIA E REGRAS</h2>
-        <div id="health-logs" class="log-screen">
-            <p id="check-elements">> 1. Elements: Estrutura limpa.</p>
-            <p id="check-network">> 2. Network: Independência verificada.</p>
-            <p id="check-console">> 3. Console: Silêncio operacional.</p>
+        <h2>💧 PROTOCOLO DE SAÚDE</h2>
+        <div class="tool-card">
+            <h3>Calculadora de Hidratação e Soro</h3>
+            <input type="number" id="pesoCorpo" placeholder="Seu peso (kg)">
+            <button class="btn-full" onclick="calcularSoro()">GERAR RECEITA</button>
+            <div id="resSoro" class="res-box"></div>
+        </div>
+        <div id="health-logs" class="log-screen" style="margin-top:10px;">
+            <p id="check-elements">> Elements: Estrutura organizada.</p>
+            <p id="check-network">> Network: Sistema independente.</p>
+            <p id="check-console">> Console: Silêncio operacional.</p>
         </div>
         <div class="grid-buttons">
-            <button onclick="executarSoroCaseiro()">INJETAR REPOSITOR</button>
-            <button onclick="limparCacheSistema()">ALCOOL_CLEAN</button>
+            <button onclick="ajustarDNA(145)">RESETAR ATMOSFERA</button>
+            <button onclick="localStorage.clear(); location.reload();">RESET TOTAL DO DNA</button>
         </div>
+    </section>
+
+    <section class="room" id="atmosfera-ui">
+        <h2>🎨 CLIMA SENSORIAL</h2>
+        <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)" style="width:100%;">
     </section>
 </main>
 
