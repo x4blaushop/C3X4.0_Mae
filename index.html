@@ -19,7 +19,7 @@
     <nav id="painel-comando">
         <button onclick="navegar('acervo')">ACERVO</button>
         <button onclick="navegar('logs')">CADERNO</button>
-        <button onclick="navegar('midia')">MÍDIA</button>
+        <button onclick="navegar('escritorio')">ESCRITÓRIO</button> <button onclick="navegar('midia')">MÍDIA</button>
         <button onclick="navegar('saude')">SAÚDE</button>
         <button onclick="navegar('oficina')">OFICINA</button>
         <button onclick="navegar('atmosfera')">ATMOSFERA</button>
@@ -52,6 +52,28 @@
         </div>
     </section>
 
+    <section id="escritorio" class="setor" style="display:none;">
+        <h2>🏢 COMANDO HOME OFFICE</h2>
+        <div class="grade-medidores">
+            <div class="medidor-card">
+                <small>PROTEÇÃO DE RUÍDO</small>
+                <div class="barra-progresso"><div id="barra-ruido" style="width: 95%;"></div></div>
+                <b>95% ISOLADO</b>
+            </div>
+            <div class="medidor-card">
+                <small>FOCO ATIVO</small>
+                <div class="barra-progresso"><div id="barra-foco" style="width: 0%;"></div></div>
+                <b id="timer-foco">00:00:00</b>
+            </div>
+        </div>
+        <div class="grafico-container">
+            <h3>📊 RENDIMENTO (DNA)</h3>
+            <div class="grafico-barras" id="grafico-trabalho"></div>
+        </div>
+        <button class="btn-acao" onclick="iniciarCicloFoco()">INICIAR SESSÃO</button>
+        <button class="btn-acao" onclick="encerrarESalvarSessao()">CONSOLIDAR E SALVAR</button>
+    </section>
+
     <section id="midia" class="setor" style="display:none;">
         <h2>📻 MÍDIA SOBERANA</h2>
         <p>Habite a casa com som sem depender da internet externa.</p>
@@ -73,10 +95,9 @@
         <h2>🛠 OFICINA DE PRIVACIDADE</h2>
         <div class="box-util">
             <h3>🛡 LIMPADOR DE METADADOS</h3>
-            <p>Remova rastros de localização de suas fotos antes de enviá-las para fora.</p>
+            <p>Remova rastros de localização de suas fotos.</p>
             <input type="file" id="limpador-input" onchange="limparDadosFoto(this)" hidden>
             <button class="btn-acao" onclick="document.getElementById('limpador-input').click()">LIMPAR FOTO</button>
-            <div id="resultado-limpeza"></div>
         </div>
     </section>
 
@@ -85,9 +106,9 @@
         <div class="grade-config">
             <div class="config-card">
                 <h3>Cores da Casa</h3>
-                <label>Energia (Verde):</label><input type="color" id="color-accent" value="#00ff41" onchange="aplicarReforma()">
-                <label>Fundo (Paredes):</label><input type="color" id="color-bg" value="#050505" onchange="aplicarReforma()">
-                <label>Botões (Móveis):</label><input type="color" id="color-btn" value="#0a0a0a" onchange="aplicarReforma()">
+                <label>Energia:</label><input type="color" id="color-accent" value="#00ff41" onchange="aplicarReforma()">
+                <label>Fundo:</label><input type="color" id="color-bg" value="#050505" onchange="aplicarReforma()">
+                <label>Botões:</label><input type="color" id="color-btn" value="#0a0a0a" onchange="aplicarReforma()">
             </div>
             <div class="config-card">
                 <h3>Nomes dos Cômodos</h3>
