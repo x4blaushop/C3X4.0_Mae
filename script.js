@@ -1,72 +1,43 @@
-let data = JSON.parse(localStorage.getItem("house")) || {
-    start: Date.now(),
-    photos: [],
-    notes: "",
-    theme: "matrix",
-    simple: false,
-    clicks: 0
-};
-
-const save = () => localStorage.setItem("house", JSON.stringify(data));
-
-// TIMER DE SESSÃO
-let sec = 0;
-setInterval(() => {
-    sec++;
-    let m = Math.floor(sec/60).toString().padStart(2,'0');
-    let s = (sec%60).toString().padStart(2,'0');
-    document.getElementById("timer").innerText = `${m}:${s}`;
-}, 1000);
-
-// MEDIDOR DE CLIQUES E PING
-document.addEventListener("click", (e) => {
-    if(e.target.tagName === "BUTTON") {
-        data.clicks++;
-        document.getElementById("click-count").innerText = data.clicks;
-        save();
-        
-        // Simulação de Latência de Processamento Interno
-        const start = Date.now();
-        setTimeout(() => {
-            document.getElementById("ping").innerText = (Date.now() - start) + "ms";
-        }, 50);
-    }
-});
-
-// FUNÇÕES DE COMANDO
-function toggleSimple() {
-    data.simple = !data.simple;
-    document.body.classList.toggle("simple-mode", data.simple);
-    document.getElementById("btn-foco").innerText = data.simple ? "MODO_FOCO: ON" : "MODO_FOCO: OFF";
-    save();
+:root {
+    --gold: #00ff41; /* Verde Matrix Vibrante */
+    --piano-black: #050505;
+    --soft-white: #f0f0f0;
+    --transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1);
 }
 
-function toggleTheme() {
-    data.theme = data.theme === "matrix" ? "brutalist" : "matrix";
-    document.body.className = data.theme;
-    save();
+body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: var(--piano-black); font-family: 'Inter', sans-serif; }
+
+/* NAVEGAÇÃO HUD */
+.hud-header {
+    position: fixed; top: 0; width: 100%; padding: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100; backdrop-filter: blur(5px);
 }
 
-// RESTANTE DA LÓGICA (GALERIA/NOTAS)
-const notes = document.getElementById("notes");
-notes.value = data.notes;
-notes.oninput = () => { data.notes = notes.value; save(); };
-
-const days = Math.floor((Date.now() - data.start) / 86400000);
-document.getElementById("habita-status").innerText = `Habitação ativa há ${days} ciclos.`;
-
-// MATRIX (O FUNDO SOBERANO)
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-const drops = Array(Math.floor(canvas.width/14)).fill(1);
-function draw() {
-    ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "#0f0"; ctx.font = "14px monospace";
-    drops.forEach((y, i) => {
-        ctx.fillText(Math.floor(Math.random()*2), i*14, y*14);
-        if(y*14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-    });
+.nav-links button {
+    background: transparent; border: none; color: #555;
+    margin-left: 20px; letter-spacing: 3px; cursor: pointer; transition: 0.3s;
 }
-setInterval(draw, 50);
+
+.nav-links button:hover { color: var(--gold); }
+
+/* SISTEMA DE CÔMODOS (ROOMS) */
+.room {
+    position: absolute; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transform: scale(1.1);
+    transition: var(--transition);
+}
+
+.room.active { opacity: 1; visibility: visible; transform: scale(1); }
+
+.content { text-align: center; max-width: 80%; }
+
+/* ESTÉTICA DE MANSÃO */
+h1 { font-size: 4rem; font-weight: 200; letter-spacing: -2px; }
+textarea { 
+    width: 600px; height: 300px; background: transparent; 
+    border: 1px solid #222; color: var(--gold); padding: 20px; font-size: 1.2rem;
+}
+
+canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
