@@ -2,82 +2,60 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Casa Digital — Habitação Pessoal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Digital</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="entrada">
-    <h1>Casa Digital</h1>
-    <p>Uma habitação digital para organizar, viver e explorar.</p>
-    <a class="portal" href="https://x4blaushop.github.io/NIVEL-0/" target="_blank">
-      Portal — Nível 0
-    </a>
-  </header>
+<header>
+  <h1>🏠 Minha Casa Digital</h1>
+  <nav>
+    <a href="#pesquisa">Pesquisar</a>
+    <a href="#notas">Anotações</a>
+    <a href="#links">Meus Links</a>
+    <a href="#galeria">Fotos</a>
+    <a href="#manual">Manual</a>
+    <a href="https://x4blaushop.github.io/NIVEL-0/" target="_blank">Portal</a>
+  </nav>
+</header>
 
-  <main>
+<section id="pesquisa" class="bloco">
+  <h2>🔎 Pesquisar na internet</h2>
+  <input type="text" id="busca" placeholder="Pesquisar fora da casa...">
+  <button onclick="pesquisar()">Pesquisar</button>
+</section>
 
-    <!-- MAPA DA CASA -->
-    <section class="comodo">
-      <h2>🗺️ Mapa da Casa</h2>
-      <div class="botoes">
-        <button onclick="mostrarComodo('sala')">Sala</button>
-        <button onclick="mostrarComodo('escritorio')">Escritório</button>
-        <button onclick="mostrarComodo('biblioteca')">Biblioteca</button>
-        <button onclick="mostrarComodo('pesquisa')">Pesquisa</button>
-        <button onclick="mostrarComodo('manual')">Manual</button>
-      </div>
-    </section>
+<section id="notas" class="bloco">
+  <h2>📝 Bloco de Anotações</h2>
+  <textarea id="notasTexto" placeholder="Escreva aqui..."></textarea>
+  <div class="botoes">
+    <button onclick="limparNotas()">Limpar</button>
+    <button onclick="exportarNotas()">Exportar</button>
+  </div>
+</section>
 
-    <!-- SALA -->
-    <section id="sala" class="comodo oculto">
-      <h2>🛋️ Sala de Estar</h2>
-      <p>Um espaço para observar, pensar e descansar.</p>
-    </section>
+<section id="links" class="bloco">
+  <h2>🔗 Meus Links</h2>
+  <input type="text" id="linkNome" placeholder="Nome">
+  <input type="url" id="linkURL" placeholder="https://">
+  <button onclick="adicionarLink()">Adicionar</button>
+  <ul id="listaLinks"></ul>
+</section>
 
-    <!-- ESCRITÓRIO -->
-    <section id="escritorio" class="comodo oculto">
-      <h2>📝 Escritório</h2>
-      <textarea id="notas" placeholder="Escreva aqui suas anotações..."></textarea>
-      <button onclick="salvarNotas()">Salvar</button>
-    </section>
+<section id="galeria" class="bloco">
+  <h2>🖼️ Galeria de Fotos</h2>
+  <input type="file" id="fotoInput" accept="image/*">
+  <div id="galeriaFotos"></div>
+</section>
 
-    <!-- BIBLIOTECA -->
-    <section id="biblioteca" class="comodo oculto">
-      <h2>📚 Biblioteca</h2>
-      <p>Conhecimento é público. Use a pesquisa para explorar.</p>
-    </section>
+<section id="manual" class="bloco">
+  <h2>📘 Manual da Habitação Digital</h2>
+  <p>Esta é a sua casa digital.</p>
+  <p>Aqui você pode anotar, guardar links, fotos, pesquisar e organizar sua vida.</p>
+  <p>Tudo é seu. Você pode mudar, apagar ou adaptar quando quiser.</p>
+  <p>Esta casa não substitui serviços externos. Ela organiza sua rotina.</p>
+</section>
 
-    <!-- PESQUISA -->
-    <section id="pesquisa" class="comodo oculto">
-      <h2>🔎 Pesquisa Externa</h2>
-      <input id="campoPesquisa" type="text" placeholder="Pesquisar na rede...">
-      <button onclick="pesquisar()">Pesquisar</button>
-    </section>
-
-    <!-- MANUAL -->
-    <section id="manual" class="comodo oculto">
-      <h2>📖 Manual da Casa Digital</h2>
-      <p>
-        Esta é sua casa digital.<br><br>
-        Você pode:
-        <ul>
-          <li>Organizar ideias</li>
-          <li>Pesquisar informações</li>
-          <li>Personalizar o espaço</li>
-        </ul>
-        Nada aqui coleta dados sensíveis.<br>
-        A casa é apenas uma infraestrutura digital pessoal.
-      </p>
-    </section>
-
-  </main>
-
-  <footer>
-    <p>Habitação Digital • Visual Matrix • Uso pessoal</p>
-  </footer>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
