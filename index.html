@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="matrix">
-<canvas id="matrix"></canvas>
+<div id="portal-bg">
+    <canvas id="canvas-portal"></canvas>
+</div>
 
 <header>
   <div class="brand">
     <h1>C3X4.0_MAE</h1>
-    <div id="dna-pulse" onclick="verificarAcessoSoberano()" title="Identificação Arquiteto José Patrick"></div>
+    <div id="dna-pulse" onclick="verificarAcessoSoberano()" title="Arquiteto José Patrick"></div>
   </div>
   
   <div class="custom-panel">
@@ -28,74 +30,30 @@
     <section class="room" id="telemetria">
         <div class="stats-grid">
             <div class="stat-card"><small>SESSÃO</small><b id="timer">00:00</b></div>
-            <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
-            <div class="stat-card"><small>ESTADO</small><b id="sys-state">ESTÁVEL</b></div>
-            <div class="stat-card"><small>DNA_SAÚDE</small><b id="bio-status">100%</b></div>
+            <div class="stat-card"><small>INTEGRIDADE</small><b id="sys-state">ESTÁVEL</b></div>
+            <div class="stat-card"><small>BIO_SAÚDE</small><b id="bio-status">100%</b></div>
         </div>
     </section>
 
     <section class="room" id="atmosfera" style="display:none;">
-        <h2>🎨 COMANDO DE ATMOSFERA (255 CORES)</h2>
-        <div class="control-grid">
-            <div class="control-item">
-                <small>DNA HUE (0-255)</small>
-                <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)">
-            </div>
-            <div class="control-item">
-                <small>FILTRO DE RUÍDO EXTERNO</small>
-                <button id="noise-filter" onclick="toggleRuido()">MURALHA: ATIVA</button>
-            </div>
-        </div>
-        <div class="grid-buttons">
-            <button onclick="aplicarEfeito('glitch')">EFEITO GLITCH</button>
-            <button onclick="aplicarEfeito('pulse')">EFEITO PULSAR</button>
-        </div>
-        <div id="scanner-container" style="margin-top:20px; display:none;">
-            <video id="webcam" autoplay playsinline style="width:100%; border:2px solid var(--green); border-radius:8px;"></video>
-            <p id="scanner-msg">AGUARDANDO RECONHECIMENTO FACIAL...</p>
-        </div>
-    </section>
-
-    <section class="room" id="diagnostico" style="display:none;">
-        <h2>🛠 DIAGNÓSTICO DO ARQUITETO</h2>
-        <div id="health-logs" class="log-screen">
-            <p id="check-elements">> 1. Elements: Estrutura OK.</p>
-            <p id="check-network">> 2. Network: Independência OK.</p>
-            <p id="check-console">> 3. Console: Sistema em silêncio.</p>
-        </div>
-        <div class="grid-buttons">
-            <button onclick="executarSoroCaseiro()">INJETAR REPOSITOR (SORO)</button>
-            <button onclick="limparSistema()">DESINTOXICAÇÃO (ALCOOL_CLEAN)</button>
-        </div>
+        <h2>🎨 COMANDO DE ATMOSFERA</h2>
+        <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)">
+        <button onclick="aplicarEfeito('glitch')">GLITCH</button>
     </section>
 
     <section class="room" id="galeria" style="display:none;">
-        <h2>🖼 ACERVO DIGITAL (Injeção em Massa)</h2>
-        <div id="galeria-travada">
-            <p>⚠️ ACESSO RESTRITO. VALIDE SEU DNA NO SETOR ATMOSFERA.</p>
-            <button onclick="ativarScannerVisual()">ATIVAR SCANNER VISUAL</button>
-        </div>
-        <div id="galeria-conteudo" style="display:none;">
-            <div class="upload-area">
-                <input type="file" id="inputFoto" multiple hidden onchange="processarImagensMassa(this)">
-                <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIAS (MÚLTIPLAS)</button>
-            </div>
-            <div id="grid-galeria" class="gallery-grid"></div>
-        </div>
+        <h2>🖼 ACERVO (Injeção em Massa)</h2>
+        <input type="file" id="inputFoto" multiple hidden onchange="injetarMemoriaMassa(this)">
+        <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIAS NO DNA</button>
+        <div id="grid-galeria" class="gallery-grid"></div>
     </section>
 
     <section class="room" id="notas" style="display:none;">
-        <h2>📒 REGISTRO DE DNA (Memória Permanente)</h2>
-        <textarea id="txtNotas" placeholder="Escreva no DNA da casa..." onkeyup="salvarNota(this.value)"></textarea>
-    </section>
-
-    <section class="room" id="terminais">
-        <div class="grid-buttons">
-            <button onclick="window.open('https://wa.me/55')">WHATSAPP_TUNNEL</button>
-            <button onclick="window.open('https://x4blaushop.github.io/NIVEL-0/')">GATE_LEVEL_0</button>
-        </div>
+        <h2>📒 REGISTROS</h2>
+        <textarea id="txtNotas" onkeyup="salvarNota(this.value)"></textarea>
     </section>
 </main>
+
 <script src="script.js"></script>
 </body>
 </html>
