@@ -2,63 +2,66 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>C3X4.0_MAE | ARQUITETO</title>
+    <title>C3X4.0 | A MANSÃO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="matrix">
-<canvas id="matrix"></canvas>
+<body class="mansao-mode">
 
-<header>
-  <div class="brand">
-    <h1>C3X4.0_MAE</h1>
-    <div id="status-light"></div>
-  </div>
-  <div class="top-controls">
-    <button onclick="toggleSimple()" id="btn-foco">MODO_FOCO: OFF</button>
-    <button onclick="toggleTheme()">SHIFT_DNA</button>
-    <button onclick="exportData()">BACKUP_SOBERANO</button>
-  </div>
-</header>
+<canvas id="matrix-bg"></canvas>
 
-<main>
-    <section class="dashboard">
-        <div class="stat">
-            <label>FLUXO_SESSÃO</label>
-            <span id="timer">00:00</span>
-        </div>
-        <div class="stat">
-            <label>CLIQUES_DNA</label>
-            <span id="click-count">0</span>
-        </div>
-        <div class="stat">
-            <label>LATÊNCIA</label>
-            <span id="ping">-- ms</span>
+<nav class="hud-header">
+    <div class="brand">C3X4.0 <span id="pulse"></span></div>
+    <div class="nav-links">
+        <button onclick="irPara('suite-principal')">SALA</button>
+        <button onclick="irPara('acervo')">GALERIA</button>
+        <button onclick="irPara('escritorio')">NOTAS</button>
+        <button onclick="irPara('central-comando')">SISTEMA</button>
+    </div>
+</nav>
+
+<main id="viewport">
+    <section id="suite-principal" class="room active">
+        <div class="content">
+            <h1>Bem-vindo à sua Habitação</h1>
+            <p id="days-count">Ciclo de vida ativo.</p>
+            <div class="interactive-card">
+                <span>ESTADO ATUAL</span>
+                <strong id="live-status">HARMONIA</strong>
+            </div>
         </div>
     </section>
 
-    <section class="room" id="sala">
-        <h2>IDENTIDADE</h2>
-        <p id="habita-status"></p>
+    <section id="acervo" class="room">
+        <div class="content">
+            <h2>Acervo Digital</h2>
+            <div class="upload-zone">
+                <input type="file" id="photoInput" multiple>
+                <label for="photoInput">ADICIONAR MEMÓRIA</label>
+            </div>
+            <div id="gallery-grid"></div>
+        </div>
     </section>
 
-    <section class="room" id="galeria">
-        <h2>ACERVO_DIGITAL</h2>
-        <input type="file" id="photoInput" multiple>
-        <div id="gallery"></div>
+    <section id="escritorio" class="room">
+        <div class="content">
+            <h2>Escritório de Dados</h2>
+            <textarea id="main-notes" placeholder="O que deseja registrar no DNA hoje?"></textarea>
+        </div>
     </section>
 
-    <section class="room" id="notas">
-        <h2>LOG_DE_NOTAS</h2>
-        <textarea id="notes" placeholder="Registrar no sistema..."></textarea>
-    </section>
-
-    <section class="room" id="conexoes">
-        <h2>TERMINAIS_EXTERNOS</h2>
-        <div class="grid-buttons">
-            <button onclick="openWhats()">WHATSAPP_TUNNEL</button>
-            <button onclick="openLink()">EXTERNAL_LINK</button>
-            <button onclick="openNivel()">GATE_LEVEL_0</button>
+    <section id="central-comando" class="room">
+        <div class="content">
+            <h2>Central de Comando</h2>
+            <div class="metrics-grid">
+                <div class="m-card">LATÊNCIA <b id="ping">--</b></div>
+                <div class="m-card">INTERAÇÕES <b id="clicks">0</b></div>
+                <div class="m-card">INTEGRIDADE <b>100%</b></div>
+            </div>
+            <div class="sys-actions">
+                <button onclick="toggleTheme()">DNA SHIFT</button>
+                <button onclick="exportData()">SINCRONIZAR</button>
+            </div>
         </div>
     </section>
 </main>
