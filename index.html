@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Habitação Digital - C3X4.0</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>C3X4.0 - Habitação Digital</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="matrix">
 
 <canvas id="matrix"></canvas>
 
 <header>
-  <h1>🏠 Casa Digital</h1>
+  <div class="brand">
+    <h1>🏠 Casa Digital</h1>
+    <span id="dna-pulse"></span>
+  </div>
   <div class="top-controls">
-    <button onclick="toggleSimple()">Modo Simples</button>
-    <button onclick="toggleTheme()">Tema</button>
-    <button onclick="exportData()">Backup</button>
+    <button onclick="toggleSimple()" class="btn-modern" id="btn-simple">Modo Foco</button>
+    <button onclick="toggleTheme()" class="btn-modern">DNA Visual</button>
+    <button onclick="exportData()" class="btn-modern btn-backup">Sincronizar</button>
   </div>
 </header>
 
@@ -26,15 +29,15 @@
             <div class="stat-card">
                 <span class="label">Status</span>
                 <span class="value" id="sys-status">Estável</span>
-                <div class="pulse"></div>
+                <div class="pulse-indicator"></div>
             </div>
             <div class="stat-card">
                 <span class="label">Interações</span>
                 <span class="value" id="interaction-count">0</span>
             </div>
             <div class="stat-card">
-                <span class="label">Saúde DNA</span>
-                <span class="value">100%</span>
+                <span class="label">Sessão</span>
+                <span class="value" id="session-timer">0s</span>
             </div>
         </div>
     </section>
@@ -42,7 +45,6 @@
     <section class="room" id="sala">
         <h2>🛋 Sala</h2>
         <p id="status"></p>
-        <small id="session-timer">Sessão: 0s</small>
     </section>
 
     <section class="room" id="galeria">
@@ -53,30 +55,35 @@
 
     <section class="room" id="notas">
         <h2>📒 Notas</h2>
-        <textarea id="notes"></textarea>
+        <textarea id="notes" placeholder="Escreva no DNA da casa..."></textarea>
     </section>
 
     <section class="room" id="links">
         <h2>🔗 Conexões</h2>
-        <button onclick="openWhats()">WhatsApp</button>
-        <button onclick="openLink()">Link Pessoal</button>
-        <button onclick="openNivel()">Portal Nível 0</button>
+        <div class="link-grid">
+            <button onclick="openWhats()">WhatsApp</button>
+            <button onclick="openLink()">Link Pessoal</button>
+            <button onclick="openNivel()">Portal Nível 0</button>
+        </div>
     </section>
 
     <section class="room">
         <h2>📘 Manual</h2>
         <details>
-            <summary>Como usar esta casa</summary>
+            <summary>Como habitar este espaço</summary>
             <p>
-                Esta é sua habitação digital independente.<br>
-                A identidade é sua; a estrutura é soberana.
+                Esta é sua habitação digital soberana.<br>
+                Estrutura ultraveloz e independente.<br>
+                Tudo é processado localmente no seu DNA.
             </p>
         </details>
     </section>
 </main>
 
+<div id="toast-container"></div>
+
 <footer>
-    José Patrick Soares • Arquiteto de Sistemas • PITSYSTEM Protegido
+    C3X4.0 • Arquiteto José Patrick • PITSYSTEM Protegido
 </footer>
 
 <script src="script.js"></script>
