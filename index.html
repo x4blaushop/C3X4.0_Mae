@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>C3X4.0 | MANSÃO SOBERANA</title>
+    <title>C3X4.0 | HABITAÇÃO SOBERANA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,7 +20,7 @@
     <button onclick="toggleSetor('galeria')">ACERVO</button>
     <button onclick="toggleSetor('notas')">LOGS</button>
     <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
-    <button onclick="sincronizarDNA()">BACKUP</button>
+    <button onclick="backupSoberano()">BACKUP</button>
   </div>
 </header>
 
@@ -29,7 +29,7 @@
         <div class="stats-grid">
             <div class="stat-card"><small>SESSÃO</small><b id="timer">00:00</b></div>
             <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
-            <div class="stat-card"><small>ESTADO SISTEMA</small><b id="sys-state">ESTÁVEL</b></div>
+            <div class="stat-card"><small>ESTADO</small><b id="sys-state">ESTÁVEL</b></div>
             <div class="stat-card"><small>DNA_SAÚDE</small><b id="bio-status">100%</b></div>
         </div>
     </section>
@@ -58,10 +58,10 @@
 
     <section class="room" id="diagnostico" style="display:none;">
         <h2>🛠 DIAGNÓSTICO DO ARQUITETO</h2>
-        <div id="health-logs">
-            <p id="check-elements">1. Elements: Estrutura OK.</p>
-            <p id="check-network">2. Network: Independência OK.</p>
-            <p id="check-console">3. Console: Sistema em silêncio.</p>
+        <div id="health-logs" class="log-screen">
+            <p id="check-elements">> 1. Elements: Estrutura OK.</p>
+            <p id="check-network">> 2. Network: Independência OK.</p>
+            <p id="check-console">> 3. Console: Sistema em silêncio.</p>
         </div>
         <div class="grid-buttons">
             <button onclick="executarSoroCaseiro()">INJETAR REPOSITOR (SORO)</button>
@@ -70,17 +70,17 @@
     </section>
 
     <section class="room" id="galeria" style="display:none;">
-        <h2>🖼 ACERVO DIGITAL (Soberania Local)</h2>
+        <h2>🖼 ACERVO DIGITAL (Injeção em Massa)</h2>
         <div id="galeria-travada">
-            <p>⚠️ ACESSO RESTRITO. VALIDE SEU DNA NO SETOR ATMOSFERA OU NO PULSE.</p>
+            <p>⚠️ ACESSO RESTRITO. VALIDE SEU DNA NO SETOR ATMOSFERA.</p>
             <button onclick="ativarScannerVisual()">ATIVAR SCANNER VISUAL</button>
         </div>
         <div id="galeria-conteudo" style="display:none;">
             <div class="upload-area">
-                <input type="file" id="inputFoto" multiple hidden onchange="processarImagens(this)">
-                <button onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIA</button>
+                <input type="file" id="inputFoto" multiple hidden onchange="processarImagensMassa(this)">
+                <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIAS (MÚLTIPLAS)</button>
             </div>
-            <div id="grid-galeria"></div>
+            <div id="grid-galeria" class="gallery-grid"></div>
         </div>
     </section>
 
@@ -96,8 +96,6 @@
         </div>
     </section>
 </main>
-
-<div id="aviso-sistema"></div>
 <script src="script.js"></script>
 </body>
 </html>
