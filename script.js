@@ -1,33 +1,82 @@
-// Mostrar cômodos
-function mostrarComodo(id) {
-  document.querySelectorAll('.comodo').forEach(sec => {
-    if (sec.id) sec.classList.add('oculto');
-  });
-
-  const alvo = document.getElementById(id);
-  if (alvo) alvo.classList.remove('oculto');
-}
-
-// Pesquisa externa (fora da casa)
+// Pesquisa
 function pesquisar() {
-  const termo = document.getElementById('campoPesquisa').value;
-  if (!termo) return;
-  const url = 'https://www.google.com/search?q=' + encodeURIComponent(termo);
-  window.open(url, '_blank');
+  const q = document.getElementById("busca").value;
+  if (q) window.open("https://www.google.com/search?q=" + encodeURIComponent(q));
 }
 
-// Bloco de notas
-function salvarNotas() {
-  const texto = document.getElementById('notas').value;
-  localStorage.setItem('notasCasa', texto);
-  alert('Anotações salvas.');
+// Notas
+const notas = document.getElementById("notasTexto");
+notas.value = localStorage.getItem("notas") || "";
+
+notas.addEventListener("input", () => {
+  localStorage.setItem("notas", notas.value);
+});
+
+function limparNotas() {
+  notas.value = "";
+  localStorage.removeItem("notas");
 }
 
-// Carregar notas ao abrir
-window.onload = () => {
-  const notas = localStorage.getItem('notasCasa');
-  if (notas) {
-    const campo = document.getElementById('notas');
-    if (campo) campo.value = notas;
-  }
-};
+function exportarNotas() {
+  const blob = new Blob([notas.value], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "anotacoes.txt";
+  a.click();
+}
+
+// Links
+const listaLinks = document.getElementById("listaLinks");
+const linksSalvos = JSON.parse(localStorage.getItem("links")) || [];
+
+function renderLinks() {
+  listaLinks.innerHTML = "";
+  linksSalvos.forEach(l => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = l.url;
+    a.textContent = l.nome;
+    a.target = "_blank";
+    a.style.color = "#62ff8a";
+    li.appendChild(a);
+    listaLinks.appendChild(li);
+  });
+}
+
+function adicionarLink() {
+  const nome = document.getElementById("linkNome").value;
+  const url = document.getElementById("linkURL").value;
+  if (!nome || !url) return;
+  linksSalvos.push({ nome, url });
+  localStorage.setItem("links", JSON.stringify(linksSalvos));
+  renderLinks();
+}
+
+renderLinks();
+
+// Galeria
+const inputFoto = document.getElementById("fotoInput");
+const galeria = document.getElementById("galeriaFotos");
+const fotos = JSON.parse(localStorage.getItem("fotos")) || [];
+
+function renderFotos() {
+  galeria.innerHTML = "";
+  fotos.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    galeria.appendChild(img);
+  });
+}
+
+inputFoto.addEventListener("change", e => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    fotos.push(reader.result);
+    localStorage.setItem("fotos", JSON.stringify(fotos));
+    renderFotos();
+  };
+  reader.readAsDataURL(file);
+});
+
+renderFotos();
