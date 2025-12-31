@@ -19,9 +19,10 @@
   <div class="custom-panel">
     <button onclick="toggleSetor('galeria')">ACERVO</button>
     <button onclick="toggleSetor('notas')">CADERNO</button>
+    <button onclick="toggleSetor('pintura')">MURAL</button>
     <button onclick="toggleSetor('ferramentas')">FERRAMENTAS</button> 
+    <button onclick="toggleSetor('entretenimento')">LAZER</button>
     <button onclick="toggleSetor('diagnostico')">SAÚDE</button> 
-    <button onclick="gerarBackupTotal()">BACKUP TOTAL</button>
   </div>
 </header>
 
@@ -30,24 +31,34 @@
         <div class="stats-grid">
             <div class="stat-card"><small>UPTIME</small><b id="timer">00:00</b></div>
             <div class="stat-card"><small>RAM_MAE</small><b id="ram-usage">0.00 MB</b></div>
-            <div class="stat-card"><small>PROTEÇÃO</small><b id="sys-state">Soberana</b></div>
-            <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
+            <div class="stat-card"><small>PORTÃO</small><b id="status-rede" style="color:var(--green)">OFFLINE</b></div>
+            <div class="stat-card"><small>FPS</small><b id="fps-monitor">60</b></div>
         </div>
+        <button id="btnRede" class="btn-full" onclick="toggleRede()" style="margin-top:10px;">ABRIR PORTÃO (ONLINE)</button>
     </section>
 
-    <section class="room" id="galeria">
+    <section class="room" id="pintura" style="display:none;">
+        <h2>🎨 MURAL DE CRIAÇÃO (LÁPIS E TINTA)</h2>
+        <div class="control-grid">
+            <input type="color" id="corPincel" value="#00ff41">
+            <button onclick="limparMural()">BORRACHA (LIMPAR TUDO)</button>
+            <button onclick="baixarDesenho()">GUARDAR PINTURA (PNG)</button>
+        </div>
+        <canvas id="muralCriativo" style="border:1px solid var(--green); background:#000; width:100%; height:350px; touch-action:none;"></canvas>
+    </section>
+
+    <section class="room" id="galeria" style="display:none;">
         <h2>🖼 ACERVO DE MEMÓRIAS</h2>
         <div class="upload-area">
             <input type="file" id="inputFoto" multiple hidden onchange="injetarMemoriaMassa(this)">
             <button class="btn-full" onclick="document.getElementById('inputFoto').click()">INJETAR FOTOS NO DNA</button>
         </div>
         <div id="grid-galeria" class="gallery-grid"></div>
-        <button class="btn-clear" onclick="limparAcervo()" style="margin-top:10px;">LIMPAR ACERVO</button>
     </section>
 
     <section class="room" id="notas" style="display:none;">
-        <h2>📒 CADERNO DE NOTAS</h2>
-        <textarea id="txtNotas" placeholder="Escreva receitas, lembretes ou pensamentos importantes..."></textarea>
+        <h2>📒 CADERNO DE REGISTROS</h2>
+        <textarea id="txtNotas" placeholder="Receitas, pensamentos, DNA da casa..."></textarea>
         <div class="grid-buttons">
             <button onclick="salvarNotaLocal()">GRAVAR NA MEMÓRIA</button>
             <button onclick="baixarNotasComoTXT()">BAIXAR ARQUIVO .TXT</button>
@@ -55,21 +66,19 @@
     </section>
 
     <section class="room" id="ferramentas" style="display:none;">
-        <h2>🛠 FERRAMENTAS DA HABITAÇÃO</h2>
+        <h2>🛠 FERRAMENTAS SOBERANAS</h2>
         <div class="tool-grid">
             <div class="tool-card">
                 <h3>🛡 LIMPADOR DE FOTOS</h3>
-                <small>Remove rastros de GPS e Celular antes de enviar a foto para alguém.</small>
+                <small>Remove metadados de GPS antes do envio externo.</small>
                 <input type="file" id="fileStripper" onchange="limparFoto(this)" hidden>
                 <button class="btn-full" onclick="document.getElementById('fileStripper').click()">LIMPAR FOTO</button>
-                <canvas id="canvasStripper" style="display:none;"></canvas>
                 <div id="downloadArea"></div>
             </div>
             <div class="tool-card">
-                <h3>⚖️ ANALISADOR DE CONTRATOS</h3>
-                <small>Cole textos de apps para ver se eles roubam seus dados.</small>
-                <textarea id="txtContrato" placeholder="Cole o texto aqui..." style="height:60px;"></textarea>
-                <button class="btn-full" onclick="analisarContrato()">ANALISAR RISCO</button>
+                <h3>⚖️ SIFONADOR DE TERMOS</h3>
+                <textarea id="txtContrato" placeholder="Cole contratos aqui..." style="height:60px;"></textarea>
+                <button class="btn-full" onclick="analisarContrato()">VERIFICAR RISCO</button>
                 <div id="resContrato" class="res-box"></div>
             </div>
         </div>
@@ -78,25 +87,15 @@
     <section class="room" id="diagnostico" style="display:none;">
         <h2>💧 PROTOCOLO DE SAÚDE</h2>
         <div class="tool-card">
-            <h3>Calculadora de Hidratação e Soro</h3>
-            <input type="number" id="pesoCorpo" placeholder="Seu peso (kg)">
-            <button class="btn-full" onclick="calcularSoro()">GERAR RECEITA</button>
+            <input type="number" id="pesoCorpo" placeholder="Peso (kg)">
+            <button class="btn-full" onclick="calcularSoro()">GERAR OSMOSE</button>
             <div id="resSoro" class="res-box"></div>
         </div>
         <div id="health-logs" class="log-screen" style="margin-top:10px;">
-            <p id="check-elements">> Elements: Estrutura organizada.</p>
-            <p id="check-network">> Network: Sistema independente.</p>
-            <p id="check-console">> Console: Silêncio operacional.</p>
+            <p id="check-elements">> 1. Elements: Casa Limpa.</p>
+            <p id="check-network">> 2. Network: Independente.</p>
+            <p id="check-console">> 3. Console: Silêncio.</p>
         </div>
-        <div class="grid-buttons">
-            <button onclick="ajustarDNA(145)">RESETAR ATMOSFERA</button>
-            <button onclick="localStorage.clear(); location.reload();">RESET TOTAL DO DNA</button>
-        </div>
-    </section>
-
-    <section class="room" id="atmosfera-ui">
-        <h2>🎨 CLIMA SENSORIAL</h2>
-        <input type="range" id="dna-hue" min="0" max="255" value="145" oninput="ajustarDNA(this.value)" style="width:100%;">
     </section>
 </main>
 
