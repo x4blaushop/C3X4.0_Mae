@@ -2,89 +2,66 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>C3X4.0 - Habitação Digital</title>
+    <title>C3X4.0_MAE | ARQUITETO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="matrix">
-
 <canvas id="matrix"></canvas>
 
 <header>
   <div class="brand">
-    <h1>🏠 Casa Digital</h1>
-    <span id="dna-pulse"></span>
+    <h1>C3X4.0_MAE</h1>
+    <div id="status-light"></div>
   </div>
   <div class="top-controls">
-    <button onclick="toggleSimple()" class="btn-modern" id="btn-simple">Modo Foco</button>
-    <button onclick="toggleTheme()" class="btn-modern">DNA Visual</button>
-    <button onclick="exportData()" class="btn-modern btn-backup">Sincronizar</button>
+    <button onclick="toggleSimple()" id="btn-foco">MODO_FOCO: OFF</button>
+    <button onclick="toggleTheme()">SHIFT_DNA</button>
+    <button onclick="exportData()">BACKUP_SOBERANO</button>
   </div>
 </header>
 
 <main>
-    <section class="room" id="medidores">
-        <h2>📊 Pulso do Sistema</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="label">Status</span>
-                <span class="value" id="sys-status">Estável</span>
-                <div class="pulse-indicator"></div>
-            </div>
-            <div class="stat-card">
-                <span class="label">Interações</span>
-                <span class="value" id="interaction-count">0</span>
-            </div>
-            <div class="stat-card">
-                <span class="label">Sessão</span>
-                <span class="value" id="session-timer">0s</span>
-            </div>
+    <section class="dashboard">
+        <div class="stat">
+            <label>FLUXO_SESSÃO</label>
+            <span id="timer">00:00</span>
+        </div>
+        <div class="stat">
+            <label>CLIQUES_DNA</label>
+            <span id="click-count">0</span>
+        </div>
+        <div class="stat">
+            <label>LATÊNCIA</label>
+            <span id="ping">-- ms</span>
         </div>
     </section>
 
     <section class="room" id="sala">
-        <h2>🛋 Sala</h2>
-        <p id="status"></p>
+        <h2>IDENTIDADE</h2>
+        <p id="habita-status"></p>
     </section>
 
     <section class="room" id="galeria">
-        <h2>🖼 Galeria</h2>
+        <h2>ACERVO_DIGITAL</h2>
         <input type="file" id="photoInput" multiple>
         <div id="gallery"></div>
     </section>
 
     <section class="room" id="notas">
-        <h2>📒 Notas</h2>
-        <textarea id="notes" placeholder="Escreva no DNA da casa..."></textarea>
+        <h2>LOG_DE_NOTAS</h2>
+        <textarea id="notes" placeholder="Registrar no sistema..."></textarea>
     </section>
 
-    <section class="room" id="links">
-        <h2>🔗 Conexões</h2>
-        <div class="link-grid">
-            <button onclick="openWhats()">WhatsApp</button>
-            <button onclick="openLink()">Link Pessoal</button>
-            <button onclick="openNivel()">Portal Nível 0</button>
+    <section class="room" id="conexoes">
+        <h2>TERMINAIS_EXTERNOS</h2>
+        <div class="grid-buttons">
+            <button onclick="openWhats()">WHATSAPP_TUNNEL</button>
+            <button onclick="openLink()">EXTERNAL_LINK</button>
+            <button onclick="openNivel()">GATE_LEVEL_0</button>
         </div>
     </section>
-
-    <section class="room">
-        <h2>📘 Manual</h2>
-        <details>
-            <summary>Como habitar este espaço</summary>
-            <p>
-                Esta é sua habitação digital soberana.<br>
-                Estrutura ultraveloz e independente.<br>
-                Tudo é processado localmente no seu DNA.
-            </p>
-        </details>
-    </section>
 </main>
-
-<div id="toast-container"></div>
-
-<footer>
-    C3X4.0 • Arquiteto José Patrick • PITSYSTEM Protegido
-</footer>
 
 <script src="script.js"></script>
 </body>
