@@ -12,14 +12,14 @@
 <header>
   <div class="brand">
     <h1>C3X4.0_MAE</h1>
-    <div id="dna-pulse" onclick="acessoSoberano()" title="Identificação Arquiteto"></div>
+    <div id="dna-pulse" onclick="verificarAcessoSoberano()" title="Identificação Arquiteto José Patrick"></div>
   </div>
   
   <div class="custom-panel">
     <input type="color" id="colorPicker" onchange="alterarAtmosfera(this.value)" title="Personalizar DNA">
     <button onclick="toggleSetor('galeria')">ACERVO</button>
     <button onclick="toggleSetor('notas')">LOGS</button>
-    <button onclick="sincronizarDNA()">BACKUP</button>
+    <button onclick="toggleSetor('diagnostico')">SAÚDE</button> <button onclick="sincronizarDNA()">BACKUP</button>
   </div>
 </header>
 
@@ -27,24 +27,37 @@
     <section class="room" id="telemetria">
         <div class="stats-grid">
             <div class="stat-card"><small>SESSÃO</small><b id="timer">00:00</b></div>
-            <div class="stat-card"><small>PULSO</small><b id="interacoes">0</b></div>
-            <div class="stat-card"><small>ESTADO</small><b id="sys-state">ESTÁVEL</b></div>
+            <div class="stat-card"><small>INTERAÇÕES</small><b id="interacoes">0</b></div>
+            <div class="stat-card"><small>ESTADO SISTEMA</small><b id="sys-state">ESTÁVEL</b></div>
+            <div class="stat-card"><small>DNA_SAÚDE</small><b id="bio-status">100%</b></div>
         </div>
     </section>
 
-    <section class="room" id="galeria">
-        <h2>🖼 ACERVO DIGITAL</h2>
-        <p class="desc">Processamento local. Soberania total sobre os dados.</p>
+    <section class="room" id="diagnostico" style="display:none;">
+        <h2>🛠 DIAGNÓSTICO DO ARQUITETO</h2>
+        <div id="health-logs">
+            <p id="check-elements">1. Elements: Estrutura OK.</p>
+            <p id="check-network">2. Network: Independência OK.</p>
+            <p id="check-console">3. Console: Sistema em silêncio.</p>
+        </div>
+        <div class="grid-buttons">
+            <button onclick="executarSoroCaseiro()">INJETAR REPOSITOR (SORO)</button>
+            <button onclick="limparSistema()">DESINTOXICAÇÃO (ALCOOL_CLEAN)</button>
+        </div>
+    </section>
+
+    <section class="room" id="galeria" style="display:none;">
+        <h2>🖼 ACERVO DIGITAL (Soberania Local)</h2>
         <div class="upload-area">
-            <input type="file" id="inputFoto" multiple hidden>
+            <input type="file" id="inputFoto" multiple hidden onchange="processarImagens(this)">
             <button onclick="document.getElementById('inputFoto').click()">INJETAR MEMÓRIA</button>
         </div>
         <div id="grid-galeria"></div>
     </section>
 
-    <section class="room" id="notas">
-        <h2>📒 REGISTRO DE DNA</h2>
-        <textarea id="txtNotas" placeholder="Escreva no DNA da casa..."></textarea>
+    <section class="room" id="notas" style="display:none;">
+        <h2>📒 REGISTRO DE DNA (Memória Permanente)</h2>
+        <textarea id="txtNotas" placeholder="Escreva no DNA da casa..." onkeyup="salvarNota(this.value)"></textarea>
     </section>
 
     <section class="room" id="terminais">
