@@ -1,1 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa • Habitação Digital</title>
 
+<style>
+/* ===============================
+   DNA VISUAL — MATRIX (IMUTÁVEL)
+   =============================== */
+:root {
+  --matrix-green: #62ff8a;
+  --bg-black: #000000;
+  --soft-green: rgba(98, 255, 138, 0.15);
+  --border-green: rgba(98, 255, 138, 0.4);
+  --text-dim: rgba(98, 255, 138, 0.75);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-black);
+  color: var(--matrix-green);
+  font-family: monospace;
+  overflow-x: hidden;
+}
+
+/* ===============================
+   FUNDO MATRIX (RESPIRANDO)
+   =============================== */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* ===============================
+   ESTRUTURA DA CASA
+   =============================== */
+header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-green);
+}
+
+header h1 {
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+header p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+main {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+/* ===============================
+   BLOCOS / CÉLULAS
+   =============================== */
+.section {
+  border: 1px solid var(--border-green);
+  padding: 24px;
+  background: var(--soft-green);
+}
+
+.section h2 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.section p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* ===============================
+   ÁREA DE PESQUISA (REDE EXTERNA)
+   =============================== */
+.research iframe {
+  width: 100%;
+  height: 420px;
+  border: 1px solid var(--border-green);
+  background: #000;
+}
+
+/* ===============================
+   PORTAL NÍVEL 0
+   =============================== */
+.portal {
+  text-align: center;
+}
+
+.portal a {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 20px;
+  border: 1px solid var(--matrix-green);
+  color: var(--matrix-green);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.portal a:hover {
+  background: var(--matrix-green);
+  color: #000;
+}
+
+/* ===============================
+   RODAPÉ
+   =============================== */
+footer {
+  padding: 18px;
+  border-top: 1px solid var(--border-green);
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<header>
+  <h1>Habitação Digital</h1>
+  <p>Infraestrutura ativa • Identidade própria • Ambiente independente</p>
+</header>
+
+<main>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <section class="section">
+    <h2>Identidade da Casa</h2>
+    <p>
+      Este espaço não é um site comum.  
+      É uma habitação digital estruturada para existir de forma independente.
+      <br><br>
+      O conteúdo aqui pode ser alterado livremente pelo habitante da casa.
+      A estrutura permanece estável.
+    </p>
+  </section>
+
+  <!-- CONTEÚDO LIVRE / MATERIAL -->
+  <section class="section">
+    <h2>Conteúdo & Material</h2>
+    <p>
+      Área reservada para textos, imagens, ideias, produtos, registros ou qualquer
+      material que represente a identidade desta casa.
+      <br><br>
+      Nada aqui é imposto. Tudo aqui é construído.
+    </p>
+  </section>
+
+  <!-- PESQUISA EXTERNA -->
+  <section class="section research">
+    <h2>Pesquisa Externa</h2>
+    <p>
+      Acesso à rede externa para estudos, referências e observação.
+      <br><br>
+      Este espaço não altera o DNA da casa.
+    </p>
+    <iframe src="https://duckduckgo.com"></iframe>
+  </section>
+
+  <!-- PORTAL PARA O NÍVEL 0 -->
+  <section class="section portal">
+    <h2>Origem da Constelação</h2>
+    <p>Retornar ao Portal de Entrada</p>
+    <a href="https://x4blaushop.github.io/NIVEL-0/" target="_self">
+      ACESSAR NÍVEL 0
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  Estrutura viva • Constelação X4 • Habitação Digital
+</footer>
+
+<script>
+/* ===============================
+   MATRIX EFFECT — LEVE E ESTÁVEL
+   =============================== */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "X4CONSTELACAO0123456789".split("");
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = [];
+
+for (let i = 0; i < columns; i++) {
+  drops[i] = Math.random() * canvas.height;
+}
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#62ff8a";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i]);
+
+    if (drops[i] > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i] += fontSize;
+  }
+}
+
+setInterval(drawMatrix, 50);
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
