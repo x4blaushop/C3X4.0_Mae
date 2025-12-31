@@ -2,6 +2,8 @@
 const OWNER_NAME = "José Patrick Castro Soares";
 let interacoes = 0;
 let ruidoPermitido = false;
+let dnaVerificado = false;
+let startTime = Date.now();
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Lógica de Atmosfera e 255 Cores (HSL)
 function ajustarDNA(valor) {
-    // Mapeia o valor 0-255 para o espectro HSL
     document.documentElement.style.setProperty('--green', `hsl(${valor}, 100%, 50%)`);
     document.getElementById('dna-pulse').style.filter = `hue-rotate(${valor}deg)`;
     localStorage.setItem('C3X4_DNA_COLOR', valor);
@@ -33,12 +34,39 @@ function toggleRuido() {
     }
 }
 
-function aplicarEfeito(tipo) {
-    document.body.className = 'matrix ' + tipo;
-    setTimeout(() => document.body.className = 'matrix', 3000);
+// FUNCIONALIDADE: Scanner Biométrico Visual
+async function ativarScannerVisual() {
+    const container = document.getElementById('scanner-container');
+    const video = document.getElementById('webcam');
+    toggleSetor('atmosfera');
+    container.style.display = 'block';
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        document.getElementById('sys-state').innerText = "ESCANEAR_DNA...";
+        
+        setTimeout(() => {
+            dnaVerificado = true;
+            document.getElementById('sys-state').innerText = "ARQUITETO_OK";
+            document.getElementById('scanner-msg').innerText = "DNA RECONHECIDO: " + OWNER_NAME;
+            document.getElementById('galeria-travada').style.display = 'none';
+            document.getElementById('galeria-conteudo').style.display = 'block';
+            alert("Soberania Confirmada. Acervo liberado.");
+            stream.getTracks().forEach(track => track.stop());
+            container.style.display = 'none';
+        }, 3000);
+    } catch (err) {
+        alert("Erro de Hardware: Câmera não detectada ou permissão negada.");
+    }
 }
 
-// Lógica de Diagnóstico Bio-Sensorial (Aba Console)
+function aplicarEfeito(tipo) {
+    document.body.classList.add(tipo);
+    setTimeout(() => document.body.classList.remove(tipo), 3000);
+}
+
+// Lógica de Diagnóstico Bio-Sensorial
 function monitorarSaude() {
     const estado = document.getElementById('sys-state');
     const bio = document.getElementById('bio-status');
@@ -58,7 +86,6 @@ function executarSoroCaseiro() {
     document.getElementById('check-console').innerText = "3. Console: Silêncio restaurado.";
 }
 
-// Função de Troca de Setores (Abas) - Expandida para Atmosfera
 function toggleSetor(setorId) {
     const setores = ['galeria', 'notas', 'diagnostico', 'atmosfera'];
     setores.forEach(s => {
@@ -68,9 +95,11 @@ function toggleSetor(setorId) {
 }
 
 function verificarAcessoSoberano() {
-    console.log("Iniciando reconhecimento facial do Arquiteto...");
-    alert("Identificação confirmada: Bem-vindo, Arquiteto " + OWNER_NAME);
-    document.body.style.border = "4px solid var(--green)";
+    if(!dnaVerificado) {
+        ativarScannerVisual();
+    } else {
+        alert("Bem-vindo de volta, Arquiteto " + OWNER_NAME);
+    }
 }
 
 function salvarNota(txt) {
@@ -91,6 +120,11 @@ function carregarDNA() {
     }
 }
 
-// Funções de suporte (Timer e Matriz simulada para não quebrar o código enviado)
-function iniciarMatriz() { console.log("Matrix Ativa."); }
-function updateTimer() { /* Lógica de timer aqui */ }
+function iniciarMatriz() { console.log("C3X4.0_MAE: Sistema Online."); }
+
+function updateTimer() {
+    const diff = Math.floor((Date.now() - startTime) / 1000);
+    const min = String(Math.floor(diff / 60)).padStart(2, '0');
+    const sec = String(diff % 60).padStart(2, '0');
+    document.getElementById('timer').innerText = `${min}:${sec}`;
+}
