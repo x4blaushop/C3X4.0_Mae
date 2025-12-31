@@ -3,7 +3,7 @@ let tempoAtividade = Date.now();
 let cronometroFoco; 
 let segundosFoco = 0;
 
-// --- 1. PORTAL GRAVITACIONAL (MANTIDO) ---
+// --- 1. PORTAL GRAVITACIONAL ---
 const canvas = document.getElementById('portal-canvas');
 const ctx = canvas.getContext('2d');
 let partículas = [];
@@ -26,8 +26,8 @@ function animarPortal() {
     requestAnimationFrame(animarPortal);
 }
 
-// --- 2. NAVEGAÇÃO E REFORMA (MANTIDO + ESCRITORIO) ---
-const idsSetores = ['acervo','logs','midia','saude','oficina','atmosfera','backup', 'escritorio'];
+// --- 2. NAVEGAÇÃO E REFORMA ---
+const idsSetores = ['acervo','logs','escritorio','midia','saude','oficina','atmosfera','backup'];
 
 function navegar(id) {
     idsSetores.forEach(s => {
@@ -38,7 +38,17 @@ function navegar(id) {
     if(id === 'escritorio') desenharGrafico();
 }
 
-// --- 3. EXPANSÃO: UTILIDADE HOME OFFICE 2025 ---
+function aplicarReforma() {
+    const acc = document.getElementById('color-accent').value;
+    const bg = document.getElementById('color-bg').value;
+    const btn = document.getElementById('color-btn').value;
+    document.documentElement.style.setProperty('--green', acc);
+    document.documentElement.style.setProperty('--bg', bg);
+    document.documentElement.style.setProperty('--btn-bg', btn);
+    localStorage.setItem('DNA_CORES', JSON.stringify({acc, bg, btn}));
+}
+
+// --- 3. UTILIDADE OFFICE ---
 function iniciarCicloFoco() {
     segundosFoco = 0;
     clearInterval(cronometroFoco);
@@ -57,14 +67,14 @@ function encerrarESalvarSessao() {
     let hist = JSON.parse(localStorage.getItem('DNA_PROD')) || [];
     hist.push({ tempo: segundosFoco, data: new Date().toLocaleDateString() });
     localStorage.setItem('DNA_PROD', JSON.stringify(hist));
-    alert("Dados Consolidados. A casa registrou seu progresso.");
+    alert("Sessão Consolidada no DNA Local.");
     desenharGrafico();
 }
 
 function desenharGrafico() {
     const container = document.getElementById('grafico-trabalho');
-    if(!container) return;
     const hist = JSON.parse(localStorage.getItem('DNA_PROD')) || [];
+    if(!container) return;
     container.innerHTML = "";
     hist.slice(-7).forEach(s => {
         const b = document.createElement('div');
@@ -74,24 +84,36 @@ function desenharGrafico() {
     });
 }
 
-// --- 4. FUNÇÕES ORIGINAIS (MANTIDAS) ---
-function aplicarReforma() {
-    const acc = document.getElementById('color-accent').value;
-    const bg = document.getElementById('color-bg').value;
-    const btn = document.getElementById('color-btn').value;
-    document.documentElement.style.setProperty('--green', acc);
-    document.documentElement.style.setProperty('--bg', bg);
-    document.documentElement.style.setProperty('--btn-bg', btn);
-    localStorage.setItem('DNA_CORES', JSON.stringify({acc, bg, btn}));
-}
-
+// --- 4. FUNÇÕES GERAIS ---
 function salvarLogsLocal() { localStorage.setItem('DNA_LOGS', document.getElementById('txt-logs').value); alert("Gravado no DNA."); }
 
+function carregarAudio(input) {
+    const player = document.getElementById('player-audio');
+    player.src = URL.createObjectURL(input.files[0]);
+}
+
+function gerarProtocoloSaude() {
+    const p = document.getElementById('peso-input').value;
+    if(p) document.getElementById('resultado-saude').innerHTML = `<strong>DIRETRIZ:</strong> ${(p*0.035).toFixed(2)}L de água/dia.`;
+}
+
+function injetarFotos(input) {
+    const galeria = document.getElementById('galeria-fotos');
+    Array.from(input.files).forEach(f => {
+        const r = new FileReader();
+        r.onload = (e) => {
+            const img = document.createElement('img'); img.src = e.target.result; img.className = "photo-item";
+            galeria.appendChild(img);
+        };
+        r.readAsDataURL(f);
+    });
+}
+
 function gerarBackupTotal() {
-    const dna = { arquiteto: ARQUITETO, logs: localStorage.getItem('DNA_LOGS'), cores: localStorage.getItem('DNA_CORES'), nomes: localStorage.getItem('DNA_NOMES'), prod: localStorage.getItem('DNA_PROD') };
+    const dna = { logs: localStorage.getItem('DNA_LOGS'), cores: localStorage.getItem('DNA_CORES'), prod: localStorage.getItem('DNA_PROD') };
     const blob = new Blob([JSON.stringify(dna)], {type:'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = `DNA_C3X4_SOBERANO.json`; a.click();
+    a.download = `DNA_C3X4_BACKUP.json`; a.click();
 }
 
 setInterval(() => {
