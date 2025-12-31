@@ -2,72 +2,47 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>C3X4.0_Mãe</title>
+  <title>C3X4.0 | Habitação Digital</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <div class="matrix-bg"></div>
+<canvas id="matrix"></canvas>
 
-  <header class="header">
-    <h1>C3X4.0 — Casa Mãe</h1>
-    <p>Espaço soberano dentro da infraestrutura X4</p>
-  </header>
+<header class="topo">
+  <h1>Habitação Digital</h1>
+  <p>Infraestrutura viva • Visual Matrix</p>
+</header>
 
-  <main class="container">
+<main class="casa">
 
-    <!-- BLOCO: IDENTIDADE -->
-    <section class="card identity">
-      <h2>🌱 Presença</h2>
-      <p>
-        Aqui não se vende.  
-        Aqui se mostra.  
-        Quem está dentro, entende.
-      </p>
-    </section>
+  <section class="comodo sala">
+    <h2>Sala de Estar</h2>
+    <p>Apresentação, convivência, identidade pública.</p>
+  </section>
 
-    <!-- BLOCO: PESQUISA -->
-    <section class="card research">
-      <h2>🌐 Acesso à Rede Externa</h2>
-      <p>Pesquisa livre sem sair do planeta.</p>
+  <section class="comodo quarto">
+    <h2>Quarto</h2>
+    <p>Essência, história, pensamentos.</p>
+  </section>
 
-      <div class="search-box">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Pesquisar na rede..."
-          autocomplete="off"
-        />
-        <button id="searchBtn">Pesquisar</button>
-      </div>
+  <section class="comodo cozinha">
+    <h2>Cozinha</h2>
+    <p>Produção, trabalho, projetos em andamento.</p>
+  </section>
 
-      <iframe
-        id="searchFrame"
-        title="Pesquisa Externa"
-        loading="lazy"
-        src="https://www.bing.com">
-      </iframe>
-    </section>
+  <section class="comodo pesquisa">
+    <h2>Pesquisa</h2>
+    <input type="text" id="busca" placeholder="Pesquisar na rede..." />
+    <button onclick="pesquisar()">Ir</button>
+  </section>
 
-    <!-- BLOCO: PORTAL -->
-    <section class="card portal">
-      <h2>🌀 Portal NÍVEL 0</h2>
-      <a
-        href="https://x4blaushop.github.io/NIVEL-0/"
-        target="_blank"
-        rel="noopener noreferrer">
-        Acessar
-      </a>
-    </section>
+</main>
 
-  </main>
+<footer class="rodape">
+  <a class="portal" href="https://x4blaushop.github.io/NIVEL-0/">⭢ Portal Nível 0</a>
+</footer>
 
-  <footer class="footer">
-    <span>X4 Infrastructure • Casa Autônoma</span>
-  </footer>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
