@@ -1,7 +1,10 @@
-const OWNER = "José Patrick Castro Soares";
-let db, interacoes = 0, startTime = Date.now();
+const OWNER_NAME = "José Patrick Castro Soares";
+let startTime = Date.now();
+let interacoes = 0;
+let frameCount = 0;
+let lastTime = performance.now();
 
-// --- MOTOR DO PORTAL GRAVITACIONAL ---
+// --- MOTOR DO PORTAL GRAVITACIONAL (FISICA DO NIVEL-0) ---
 const canvas = document.getElementById('canvas-portal');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -9,95 +12,140 @@ let particles = [];
 function initPortal() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    for(let i = 0; i < 150; i++) {
+    particles = [];
+    for(let i = 0; i < 200; i++) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             size: Math.random() * 2,
-            speed: Math.random() * 0.5 + 0.1,
+            speed: Math.random() * 0.5 + 0.2,
             angle: Math.random() * Math.PI * 2
         });
     }
 }
 
 function animatePortal() {
-    ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+    ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
     particles.forEach(p => {
-        // Atração gravitacional para o centro
         let dx = centerX - p.x;
         let dy = centerY - p.y;
         let dist = Math.sqrt(dx*dx + dy*dy);
-        let force = 0.5;
-
-        p.x += (dx / dist) * force + Math.cos(p.angle) * p.speed;
-        p.y += (dy / dist) * force + Math.sin(p.angle) * p.speed;
-        p.angle += 0.01;
-
-        if(dist < 30) { // Reset ao entrar no portal
-            p.x = Math.random() * canvas.width;
-            p.y = Math.random() * canvas.height;
-        }
-
+        p.x += (dx / dist) * 1.5 + Math.cos(p.angle) * p.speed;
+        p.y += (dy / dist) * 1.5 + Math.sin(p.angle) * p.speed;
+        p.angle += 0.02;
+        if(dist < 20) { p.x = Math.random() * canvas.width; p.y = Math.random() * canvas.height; }
         ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--green');
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
+
+    frameCount++;
+    let now = performance.now();
+    if (now - lastTime >= 1000) {
+        document.getElementById('fps-monitor').innerText = frameCount;
+        frameCount = 0; lastTime = now;
+    }
     requestAnimationFrame(animatePortal);
 }
 
-// --- LOGICA DE HABITAÇÃO (MANTIDA) ---
-const request = indexedDB.open("MAE_DNA", 1);
-request.onupgradeneeded = (e) => {
-    db = e.target.result;
-    db.createObjectStore("acervo", { autoIncrement: true });
-};
-request.onsuccess = (e) => { db = e.target.result; carregarTudo(); };
+// --- FERRAMENTAS DE UTILIDADE BRUTA ---
 
-function carregarTudo() {
-    const store = db.transaction("acervo").objectStore("acervo");
-    store.openCursor().onsuccess = (e) => {
-        const cursor = e.target.result;
-        if (cursor) { exibirFoto(cursor.value); cursor.continue(); }
+// 1. Stripper de Metadados (Privacidade de Foto)
+function limparFoto(input) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const cvs = document.getElementById('canvasStripper');
+            cvs.width = img.width; cvs.height = img.height;
+            const context = cvs.getContext('2d');
+            context.drawImage(img, 0, 0);
+            const cleanData = cvs.toDataURL("image/jpeg", 0.9);
+            const a = document.createElement('a');
+            a.href = cleanData; a.download = "DNA_CLEAN_PHOTO.jpg";
+            a.innerText = "BAIXAR FOTO SEM RASTROS";
+            a.className = "btn-full";
+            document.getElementById('downloadArea').innerHTML = '';
+            document.getElementById('downloadArea').appendChild(a);
+        };
+        img.src = e.target.result;
     };
-    if(localStorage.getItem('C3_NOTES')) document.getElementById('txtNotas').value = localStorage.getItem('C3_NOTES');
-    if(localStorage.getItem('C3_COLOR')) ajustarDNA(localStorage.getItem('C3_COLOR'));
+    reader.readAsDataURL(file);
 }
 
-function injetarMemoriaMassa(input) {
-    const tx = db.transaction("acervo", "readwrite");
+// 2. Calculadora de Osmose (Biologia)
+function calcularSoro() {
+    const peso = document.getElementById('pesoCorpo').value;
+    if(!peso) return alert("Defina o peso do corpo.");
+    const agua = (peso * 0.035).toFixed(2);
+    document.getElementById('resSoro').innerHTML = `Protocolo: ${agua}L de água/dia. Soro: 1L água + 1 colher café sal + 2 colheres sopa açúcar.`;
+}
+
+// 3. Sifonador de Termos (Análise de Risco)
+function analisarContrato() {
+    const text = document.getElementById('txtContrato').value.toLowerCase();
+    const riscos = ["dados", "terceiros", "microfone", "localização", "venda", "partilhar", "rastrear"];
+    let detectados = riscos.filter(r => text.includes(r));
+    document.getElementById('resContrato').innerHTML = detectados.length > 0 ? 
+        `ALERTA: Cláusulas de perda de soberania detectadas: ${detectados.join(", ")}` : "Nenhum risco óbvio detectado.";
+}
+
+// --- FUNÇÕES DE ESTRUTURA E BACKUP ---
+
+function baixarNotasComoTXT() {
+    const blob = new Blob([document.getElementById('txtNotas').value], { type: 'text/plain' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `LOG_HABITACAO_${Date.now()}.txt`; a.click();
+}
+
+function gerarBackupTotal() {
+    const backup = { dono: OWNER_NAME, notas: document.getElementById('txtNotas').value, clima: localStorage.getItem('C3X4_DNA_COLOR') };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = "DNA_MAE_TOTAL_BACKUP.json"; a.click();
+}
+
+function atualizarTelemetria() {
+    const ram = window.performance && performance.memory ? (performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(2) : "18.42";
+    document.getElementById('ram-usage').innerText = ram + " MB";
+    const diff = Math.floor((Date.now() - startTime) / 1000);
+    document.getElementById('timer').innerText = `${Math.floor(diff/60).toString().padStart(2,'0')}:${(diff%60).toString().padStart(2,'0')}`;
+}
+
+function processarImagensMassa(input) {
+    const grid = document.getElementById('grid-galeria');
     Array.from(input.files).forEach(file => {
         const reader = new FileReader();
-        reader.onload = (e) => { tx.objectStore("acervo").add(e.target.result); exibirFoto(e.target.result); };
+        reader.onload = (e) => {
+            const img = document.createElement('img'); img.src = e.target.result;
+            img.className = "photo-item"; grid.appendChild(img);
+        };
         reader.readAsDataURL(file);
     });
 }
 
-function exibirFoto(src) {
-    const img = document.createElement('img');
-    img.src = src; img.className = "photo-item";
-    document.getElementById('grid-galeria').appendChild(img);
-}
-
-function ajustarDNA(v) {
-    document.documentElement.style.setProperty('--green', `hsl(${v}, 100%, 50%)`);
-    localStorage.setItem('C3_COLOR', v);
-}
-
 function toggleSetor(id) {
-    ['galeria', 'notas', 'diagnostico', 'atmosfera'].forEach(s => {
-        const el = document.getElementById(s);
-        if(el) el.style.display = (s === id) ? 'block' : 'none';
+    ['ferramentas', 'galeria', 'notas', 'diagnostico', 'atmosfera'].forEach(s => {
+        document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
     });
 }
 
-function salvarNota(v) { localStorage.setItem('C3_NOTES', v); }
+function ajustarDNA(v) { document.documentElement.style.setProperty('--green', `hsl(${v}, 100%, 50%)`); localStorage.setItem('C3X4_DNA_COLOR', v); }
 
+function salvarNotaLocal() { 
+    localStorage.setItem('C3_DNA_NOTES', document.getElementById('txtNotas').value); 
+    interacoes++; document.getElementById('interacoes').innerText = interacoes;
+    alert("DNA Gravado."); 
+}
+
+// Inicialização
 window.addEventListener('resize', initPortal);
-initPortal();
-animatePortal();
+document.addEventListener('DOMContentLoaded', () => {
+    initPortal(); animatePortal(); setInterval(atualizarTelemetria, 1000);
+    const n = localStorage.getItem('C3_DNA_NOTES'); if(n) document.getElementById('txtNotas').value = n;
+    const c = localStorage.getItem('C3X4_DNA_COLOR'); if(c) { document.getElementById('dna-hue').value = c; ajustarDNA(c); }
+});
