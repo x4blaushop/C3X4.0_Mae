@@ -1,130 +1,120 @@
-// Memória de Identificação do Dono
 const OWNER_NAME = "José Patrick Castro Soares";
-let interacoes = 0;
-let ruidoPermitido = false;
-let dnaVerificado = false;
-let startTime = Date.now();
+let interacoes = 0, ruidoPermitido = false, dnaVerificado = false, startTime = Date.now(), db;
 
-// Inicialização
+// Inicialização de Infraestrutura de Dados (IndexedDB - Insubstituível)
+const request = indexedDB.open("C3X4_DNA_STORAGE", 1);
+request.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("memorias")) db.createObjectStore("memorias", { autoIncrement: true });
+};
+request.onsuccess = (e) => { db = e.target.result; carregarTudo(); };
+
 document.addEventListener('DOMContentLoaded', () => {
-    iniciarMatriz();
-    carregarDNA();
     setInterval(updateTimer, 1000);
 });
 
-// Lógica de Atmosfera e 255 Cores (HSL)
+// INJEÇÃO EM MASSA: Processa múltiplas imagens e salva no "Solo" da casa
+function processarImagensMassa(input) {
+    const files = Array.from(input.files);
+    const tx = db.transaction("memorias", "readwrite");
+    const store = tx.objectStore("memorias");
+
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            store.add(e.target.result);
+            renderizarFoto(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderizarFoto(src) {
+    const grid = document.getElementById('grid-galeria');
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = "photo-item";
+    grid.appendChild(img);
+}
+
+function carregarTudo() {
+    // Carregar Acervo do Banco de Dados Local
+    const store = db.transaction("memorias").objectStore("memorias");
+    store.openCursor().onsuccess = (e) => {
+        const cursor = e.target.result;
+        if (cursor) { renderizarFoto(cursor.value); cursor.continue(); }
+    };
+    // Carregar Preferências
+    const notas = localStorage.getItem('C3_DNA_NOTES');
+    if (notas) document.getElementById('txtNotas').value = notas;
+    const cor = localStorage.getItem('C3X4_DNA_COLOR');
+    if (cor) ajustarDNA(cor);
+}
+
+// Lógica Sensorial e Atmosfera
 function ajustarDNA(valor) {
     document.documentElement.style.setProperty('--green', `hsl(${valor}, 100%, 50%)`);
     document.getElementById('dna-pulse').style.filter = `hue-rotate(${valor}deg)`;
     localStorage.setItem('C3X4_DNA_COLOR', valor);
 }
 
-// Filtro de Ruído do Mundo Externo
 function toggleRuido() {
     ruidoPermitido = !ruidoPermitido;
     const btn = document.getElementById('noise-filter');
-    if (ruidoPermitido) {
-        btn.innerText = "MURALHA: PERMISSIVA";
-        btn.style.color = "red";
-        document.body.classList.add('noise-on');
-    } else {
-        btn.innerText = "MURALHA: ATIVA";
-        btn.style.color = "var(--green)";
-        document.body.classList.remove('noise-on');
-    }
+    document.body.classList.toggle('noise-on');
+    btn.innerText = ruidoPermitido ? "MURALHA: PERMISSIVA" : "MURALHA: ATIVA";
+    btn.style.color = ruidoPermitido ? "red" : "var(--green)";
 }
 
-// FUNCIONALIDADE: Scanner Biométrico Visual
+// Biometria Visual
 async function ativarScannerVisual() {
     const container = document.getElementById('scanner-container');
     const video = document.getElementById('webcam');
     toggleSetor('atmosfera');
     container.style.display = 'block';
-
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        document.getElementById('sys-state').innerText = "ESCANEAR_DNA...";
-        
         setTimeout(() => {
             dnaVerificado = true;
             document.getElementById('sys-state').innerText = "ARQUITETO_OK";
-            document.getElementById('scanner-msg').innerText = "DNA RECONHECIDO: " + OWNER_NAME;
             document.getElementById('galeria-travada').style.display = 'none';
             document.getElementById('galeria-conteudo').style.display = 'block';
-            alert("Soberania Confirmada. Acervo liberado.");
             stream.getTracks().forEach(track => track.stop());
             container.style.display = 'none';
+            alert("DNA Confirmado: " + OWNER_NAME);
         }, 3000);
-    } catch (err) {
-        alert("Erro de Hardware: Câmera não detectada ou permissão negada.");
-    }
-}
-
-function aplicarEfeito(tipo) {
-    document.body.classList.add(tipo);
-    setTimeout(() => document.body.classList.remove(tipo), 3000);
-}
-
-// Lógica de Diagnóstico Bio-Sensorial
-function monitorarSaude() {
-    const estado = document.getElementById('sys-state');
-    const bio = document.getElementById('bio-status');
-    const consoleLog = document.getElementById('check-console');
-
-    if (interacoes > 100) {
-        estado.innerText = "ALERTA_CRÍTICO";
-        bio.innerText = "60% (PARESTESIA)";
-        consoleLog.innerText = "3. Console: Ruído detectado (Agulhas). Injetar B12.";
-    }
-}
-
-function executarSoroCaseiro() {
-    alert("Executando Protocolo de Reposição: Soro Caseiro (Sal + Açúcar + Água). Estabilizando Osmose...");
-    document.getElementById('sys-state').innerText = "ESTÁVEL";
-    document.getElementById('bio-status').innerText = "100%";
-    document.getElementById('check-console').innerText = "3. Console: Silêncio restaurado.";
-}
-
-function toggleSetor(setorId) {
-    const setores = ['galeria', 'notas', 'diagnostico', 'atmosfera'];
-    setores.forEach(s => {
-        const el = document.getElementById(s);
-        if(el) el.style.display = (s === setorId) ? 'block' : 'none';
-    });
-}
-
-function verificarAcessoSoberano() {
-    if(!dnaVerificado) {
-        ativarScannerVisual();
-    } else {
-        alert("Bem-vindo de volta, Arquiteto " + OWNER_NAME);
-    }
+    } catch (err) { alert("Hardware não detectado."); }
 }
 
 function salvarNota(txt) {
     localStorage.setItem('C3_DNA_NOTES', txt);
     interacoes++;
     document.getElementById('interacoes').innerText = interacoes;
-    monitorarSaude();
-}
-
-function carregarDNA() {
-    const notasSalvas = localStorage.getItem('C3_DNA_NOTES');
-    if (notasSalvas) document.getElementById('txtNotas').value = notasSalvas;
-    
-    const corSalva = localStorage.getItem('C3X4_DNA_COLOR');
-    if (corSalva) {
-        document.getElementById('dna-hue').value = corSalva;
-        ajustarDNA(corSalva);
+    if (interacoes > 100) {
+        document.getElementById('bio-status').innerText = "60% (FADIGA)";
+        document.getElementById('sys-state').innerText = "ALERTA";
     }
 }
 
-function iniciarMatriz() { console.log("C3X4.0_MAE: Sistema Online."); }
+function backupSoberano() {
+    const dados = { notas: localStorage.getItem('C3_DNA_NOTES'), cor: localStorage.getItem('C3X4_DNA_COLOR') };
+    const blob = new Blob([JSON.stringify(dados)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `DNA_C3X4_BACKUP.json`;
+    a.click();
+}
+
+function toggleSetor(id) {
+    ['galeria', 'notas', 'diagnostico', 'atmosfera'].forEach(s => {
+        document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
+    });
+}
 
 function updateTimer() {
     const diff = Math.floor((Date.now() - startTime) / 1000);
-    const min = String(Math.floor(diff / 60)).padStart(2, '0');
-    const sec = String(diff % 60).padStart(2, '0');
-    document.getElementById('timer').innerText = `${min}:${sec}`;
+    document.getElementById('timer').innerText = `${Math.floor(diff/60).toString().padStart(2,'0')}:${(diff%60).toString().padStart(2,'0')}`;
 }
+
+function verificarAcessoSoberano() { dnaVerificado ? alert("Dono Online.") : ativarScannerVisual(); }
