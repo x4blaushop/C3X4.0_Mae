@@ -1,135 +1,112 @@
 const ARQUITETO = "José Patrick Castro Soares";
-let startTime = Date.now();
-let modoOnline = false;
+let uptimeStart = Date.now();
 
-// --- MOTOR DO PORTAL (ESTÉTICA E ENERGIA) ---
-const canvasPortal = document.getElementById('canvas-portal');
-const ctxP = canvasPortal.getContext('2d');
-let particles = [];
+// --- 1. EXPANSÃO DO PORTAL (FLUXO) ---
+const cvs = document.getElementById('portal-canvas');
+const ctx = cvs.getContext('2d');
+let partículas = [];
 
-function initPortal() {
-    canvasPortal.width = window.innerWidth;
-    canvasPortal.height = window.innerHeight;
-    particles = [];
-    for(let i = 0; i < 180; i++) {
-        particles.push({ x: Math.random() * canvasPortal.width, y: Math.random() * canvasPortal.height, size: Math.random() * 2.2, speed: 0.4, angle: Math.random() * Math.PI * 2 });
+function setupPortal() {
+    cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+    partículas = [];
+    for(let i=0; i<100; i++) {
+        partículas.push({ x: Math.random()*cvs.width, y: Math.random()*cvs.height, r: Math.random()*2.5, s: Math.random()*0.4 + 0.1 });
     }
 }
 
-function animatePortal() {
-    ctxP.fillStyle = 'rgba(5, 5, 5, 0.15)';
-    ctxP.fillRect(0, 0, canvasPortal.width, canvasPortal.height);
-    particles.forEach(p => {
-        p.x += Math.cos(p.angle) * p.speed; p.y += Math.sin(p.angle) * p.speed;
-        if(p.x < 0 || p.x > canvasPortal.width || p.y < 0 || p.y > canvasPortal.height) { p.x = Math.random() * canvasPortal.width; p.y = Math.random() * canvasPortal.height; }
-        ctxP.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--green') || '#00ff41';
-        ctxP.beginPath(); ctxP.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctxP.fill();
+function fluxPortal() {
+    ctx.fillStyle = 'rgba(5,5,5,0.15)'; ctx.fillRect(0,0,cvs.width,cvs.height);
+    partículas.forEach(p => {
+        p.y -= p.s; if(p.y < 0) p.y = cvs.height;
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--green');
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
     });
-    requestAnimationFrame(animatePortal);
+    requestAnimationFrame(fluxPortal);
 }
 
-// --- MURAL DE PINTURA (O LÁPIS DA CASA) ---
-const mural = document.getElementById('muralCriativo');
-const ctxM = mural.getContext('2d');
-let desenhando = false;
+// --- 2. NAVEGAÇÃO E REFORMA SOBERANA ---
+const setores = ['acervo','caderno','midia','saude','oficina','reforma','backup'];
 
-function setupMural() {
-    const rect = mural.getBoundingClientRect();
-    mural.width = mural.offsetWidth; mural.height = mural.offsetHeight;
-    
-    const startDrawing = (e) => { desenhando = true; draw(e); };
-    const stopDrawing = () => { desenhando = false; ctxM.beginPath(); };
-    
-    const draw = (e) => {
-        if(!desenhando) return;
-        const r = mural.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - r.left;
-        const y = (e.clientY || e.touches[0].clientY) - r.top;
-        
-        ctxM.lineWidth = document.getElementById('tamanhoPincel').value;
-        ctxM.lineCap = 'round';
-        ctxM.strokeStyle = document.getElementById('corPincel').value;
-        
-        ctxM.lineTo(x, y); ctxM.stroke();
-        ctxM.beginPath(); ctxM.moveTo(x, y);
-    };
-
-    mural.addEventListener('mousedown', startDrawing);
-    mural.addEventListener('mousemove', draw);
-    mural.addEventListener('mouseup', stopDrawing);
-    mural.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
-    mural.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
-    mural.addEventListener('touchend', stopDrawing);
+function navegar(id) {
+    setores.forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none');
+    if(id === 'reforma') montarInterfaceReforma();
 }
 
-function limparMural() { ctxM.clearRect(0, 0, mural.width, mural.height); }
+function mutarDNA() {
+    const a = document.getElementById('cfg-accent').value;
+    const b = document.getElementById('cfg-bg').value;
+    const c = document.getElementById('cfg-btn').value;
+    document.documentElement.style.setProperty('--green', a);
+    document.documentElement.style.setProperty('--bg', b);
+    document.documentElement.style.setProperty('--btn', c);
+    localStorage.setItem('DNA_CORES', JSON.stringify({a, b, c}));
+}
 
-// --- MULTIMÍDIA (MÚSICA OFFLINE) ---
-function carregarMusica(input) {
-    const file = input.files[0];
-    const url = URL.createObjectURL(file);
-    const player = document.getElementById('playerAudio');
-    player.src = url;
+function montarInterfaceReforma() {
+    const nomes = JSON.parse(localStorage.getItem('DNA_NOMES')) || {acervo:"ACERVO", caderno:"CADERNO", midia:"MÍDIA", saude:"SAÚDE", oficina:"OFICINA", reforma:"REFORMA", backup:"BACKUP"};
+    const container = document.getElementById('editor-nomes'); container.innerHTML = "";
+    for(let k in nomes) {
+        container.innerHTML += `<div><small>${k}:</small><input type="text" id="edit-${k}" value="${nomes[k]}"></div>`;
+    }
+}
+
+function consolidarReforma() {
+    const novosNomes = {};
+    setores.forEach(s => novosNomes[s] = document.getElementById(`edit-${s}`).value);
+    localStorage.setItem('DNA_NOMES', JSON.stringify(novosNomes));
+    aplicarDNA();
+}
+
+function aplicarDNA() {
+    const n = JSON.parse(localStorage.getItem('DNA_NOMES'));
+    if(n) {
+        const btns = document.querySelectorAll('nav button');
+        setores.forEach((s, i) => { if(btns[i]) btns[i].innerText = n[s]; });
+    }
+    const c = JSON.parse(localStorage.getItem('DNA_CORES'));
+    if(c) {
+        document.documentElement.style.setProperty('--green', c.a);
+        document.documentElement.style.setProperty('--bg', c.b);
+        document.documentElement.style.setProperty('--btn', c.c);
+    }
+}
+
+// --- 3. FUNCIONALIDADES EXPANDIDAS ---
+function salvarLogs() { localStorage.setItem('DNA_LOGS', document.getElementById('txt-logs').value); alert("Gravado no DNA."); }
+
+function carregarAudio(input) {
+    const player = document.getElementById('audio-player');
+    player.src = URL.createObjectURL(input.files[0]);
     player.play();
 }
 
-// --- SOBERANIA E ACERVO ---
-function toggleRede() {
-    modoOnline = !modoOnline;
-    const s = document.getElementById('status-rede');
-    const b = document.getElementById('btnRede');
-    s.innerText = modoOnline ? "MODO ONLINE (RISCO)" : "MODO PRIVADO";
-    s.style.color = modoOnline ? "#ff4444" : "#00ff41";
-    b.innerText = modoOnline ? "FECHAR PORTÃO (VOLTAR À SEGURANÇA)" : "ABRIR PORTÃO (CONECTAR AO MUNDO)";
-}
-
-function injetarMemoriaMassa(input) {
-    const grid = document.getElementById('grid-galeria');
-    Array.from(input.files).forEach(f => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = document.createElement('img');
-            img.src = e.target.result; img.className = "photo-item";
-            grid.appendChild(img);
-        };
-        reader.readAsDataURL(f);
-    });
-}
-
-function salvarNotaLocal() {
-    localStorage.setItem('DNA_MAE_NOTES', document.getElementById('txtNotas').value);
-    alert("Memória registrada no Caderno.");
-}
-
-function calcularSoro() {
-    const p = document.getElementById('pesoCorpo').value;
+function calcularSaude() {
+    const p = document.getElementById('peso-mae').value;
     if(!p) return;
-    document.getElementById('resSoro').innerHTML = `
-        <strong>Protocolo de Vida:</strong><br>
-        • Hidratação: ${(p * 0.035).toFixed(2)}L de água/dia.<br>
-        • Soro: 1L Água + 1 colher café sal + 2 colheres sopa açúcar.
-    `;
+    document.getElementById('res-saude').innerHTML = `<strong>RECOMENDAÇÃO:</strong><br>Hidratação: ${(p*0.035).toFixed(2)}L de água/dia.<br>Soro Caseiro: 1L água + 1 colher café sal + 2 colheres sopa açúcar.`;
 }
 
-function toggleSetor(id) {
-    const setores = ['galeria', 'notas', 'pintura', 'multimidia', 'ferramentas', 'diagnostico'];
-    setores.forEach(s => {
-        const el = document.getElementById(s);
-        if(el) el.style.display = (s === id) ? 'block' : 'none';
-    });
+function executarBackup() {
+    const cofre = { 
+        logs: localStorage.getItem('DNA_LOGS'), 
+        cores: localStorage.getItem('DNA_CORES'), 
+        nomes: localStorage.getItem('DNA_NOMES'),
+        fotos: localStorage.getItem('DNA_FOTOS')
+    };
+    const blob = new Blob([JSON.stringify(cofre)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "DNA_C3X4_MAE.json"; a.click();
 }
 
-// INICIALIZAÇÃO
-window.addEventListener('resize', initPortal);
-document.addEventListener('DOMContentLoaded', () => {
-    initPortal(); animatePortal(); setupMural();
-    setInterval(() => {
-        const d = Math.floor((Date.now() - startTime) / 1000);
-        document.getElementById('timer').innerText = `${Math.floor(d/60).toString().padStart(2,'0')}:${(d%60).toString().padStart(2,'0')}`;
-        const ram = window.performance && performance.memory ? (performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(2) : "9.54";
-        document.getElementById('ram-usage').innerText = ram + " MB";
-    }, 1000);
-    const n = localStorage.getItem('DNA_MAE_NOTES'); if(n) document.getElementById('txtNotas').value = n;
-});
+// --- 4. TELEMETRIA (DIAGNÓSTICO REAL) ---
+setInterval(() => {
+    const delta = Math.floor((Date.now() - uptimeStart)/1000);
+    document.getElementById('uptime').innerText = `${Math.floor(delta/60)}:${(delta%60).toString().padStart(2,'0')}`;
+    document.getElementById('st-network').innerText = navigator.onLine ? "ONLINE" : "OFFLINE";
+    document.getElementById('st-elements').innerText = document.querySelectorAll('*').length < 1000 ? "LIMPO" : "PESADO";
+}, 1000);
 
-function verificarAcessoSoberano() { alert(`Reconhecido: Arquiteto ${ARQUITETO}. Habitação Segura.`); }
+window.onload = () => { 
+    setupPortal(); fluxPortal(); aplicarDNA(); 
+    document.getElementById('txt-logs').value = localStorage.getItem('DNA_LOGS') || "";
+    navegar('acervo'); 
+};
