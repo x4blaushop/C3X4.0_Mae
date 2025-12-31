@@ -1,83 +1,73 @@
-*{box-sizing:border-box;font-family:system-ui}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Habitação Digital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="matrix">
 
-body{
-margin:0;
-background:#0f1115;
-color:#eaeaea;
-overflow-x:hidden;
-}
+<canvas id="matrix"></canvas>
 
-header{
-padding:15px;
-background:#111;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-z-index:2;
-position:relative;
-}
+<header>
+  <h1>🏠 Casa Digital</h1>
+  <div class="top-controls">
+    <button onclick="toggleSimple()">Modo Simples</button>
+    <button onclick="toggleTheme()">Tema</button>
+    <button onclick="exportData()">Backup</button>
+  </div>
+</header>
 
-.top-controls button{
-margin:4px;
-padding:6px 10px;
-border-radius:6px;
-border:none;
-cursor:pointer;
-}
+<main>
 
-main{
-max-width:900px;
-margin:auto;
-padding:20px;
-position:relative;
-z-index:2;
-}
+<section class="room" id="sala">
+<h2>🛋 Sala</h2>
+<p id="status"></p>
+</section>
 
-.room{
-background:#1c1f2b;
-padding:15px;
-margin-bottom:20px;
-border-radius:12px;
-}
+<section class="room" id="galeria">
+<h2>🖼 Galeria</h2>
+<input type="file" id="photoInput" multiple>
+<div id="gallery"></div>
+</section>
 
-textarea{
-width:100%;
-height:100px;
-border-radius:8px;
-padding:8px;
-}
+<section class="room" id="notas">
+<h2>📒 Notas</h2>
+<textarea id="notes"></textarea>
+</section>
 
-#gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-gap:10px;
-}
+<section class="room" id="graficos">
+<h2>📊 Uso da Casa</h2>
+<canvas id="chart" width="300" height="150"></canvas>
+</section>
 
-#gallery img{
-width:100%;
-border-radius:8px;
-}
+<section class="room" id="links">
+<h2>🔗 Conexões</h2>
+<button onclick="openWhats()">WhatsApp</button>
+<button onclick="openLink()">Link Pessoal</button>
+<button onclick="openNivel()">Portal Nível 0</button>
+</section>
 
-footer{
-text-align:center;
-padding:10px;
-color:#777;
-}
+<section class="room">
+<h2>📘 Manual</h2>
+<details>
+<summary>Como usar esta casa</summary>
+<p>
+Esta é sua habitação digital.<br>
+Nada é enviado para fora.<br>
+Você pode mudar, ligar ou desligar cômodos.<br>
+Tudo é simples, local e seu.
+</p>
+</details>
+</section>
 
-/* MODO SIMPLES */
-.simple .top-controls,
-.simple #graficos{
-display:none;
-}
+</main>
 
-/* MATRIX */
-canvas#matrix{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
-pointer-events:none;
-}
+<footer>
+Habitação Digital • Dados locais • Controle total
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
